@@ -1,0 +1,1 @@
+The repository "The Complexity of Space Bounded Computation" is intended to be a collection of notes, articles or monographs which may be eventually summarized as a textbook on this topic which is a thriving and an extremely important branch of Computational Complexity.
