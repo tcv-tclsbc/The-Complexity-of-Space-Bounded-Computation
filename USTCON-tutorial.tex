@@ -1,0 +1,351 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage{algorithm2e}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%\usepackage{graphics}
+\usepackage{setspace}
+\onehalfspacing
+%\usepackage{fullpage}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}{Observation}[theorem]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+
+\newtheorem{remarknum}{Theorem}
+\newtheorem{remark}[remarknum]{Remark}
+
+\newtheorem{notenum}{Theorem}
+\newtheorem{note}[notenum]{Note}
+
+\newtheorem{claimnum}{Theorem}
+\newtheorem{claimn}[claimnum]{Claim}
+
+\newcommand{\bproof}{\noindent{\it Proof}}
+\newcommand{\eproof}{\hspace*{\fill}$\rule{2mm}{2mm}$~~~~\bigskip}
+\renewenvironment{proof}{\bproof. }{\eproof}
+\newenvironment{psketch}{\bproof~{\it Sketch}. }{\eproof}
+
+\newcommand{\cproof}{\noindent{\it Proof of Claim.}}
+
+\newcommand{\Ptime}{\mbox{\rm P}}
+\newcommand{\NP}{\mbox{\rm NP}}
+\newcommand{\coNP}{\mbox{\rm coNP}}
+
+\newcommand{\sharpP}{\mbox{$\#$\rm P}}
+
+\renewcommand{\L}{\mbox{\rm L}}
+\newcommand{\FL}{\mbox{\rm FL}}
+\newcommand{\NL}{\mbox{\rm NL}}
+\newcommand{\coNL}{\mbox{\rm co-NL}}
+\newcommand{\RL}{\mbox{\rm RL}}
+\newcommand{\SL}{\mbox{\rm SL}}
+
+\newcommand{\sharpL}{\mbox{$\#$\rm L}}
+\newcommand{\parityL}{\mbox{$\oplus$\rm L}}
+\newcommand{\parityLH}{\mbox{$\oplus$\rm LH}}
+
+\newcommand{\AC}{\mbox{\rm AC}}
+\newcommand{\ACzero}{\mbox{$\AC ^0$}}
+\newcommand{\NC}{\mbox{\rm NC}}
+\newcommand{\NCone}{\mbox{$\NC ^1$}}
+\newcommand{\NCtwo}{\mbox{$\NC ^2$}}
+\newcommand{\NCthree}{\mbox{$\NC ^3$}}
+\newcommand{\NCfour}{\mbox{$\NC ^4$}}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\boldZ}{\bf\mathbb{\bf Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\replacementp}{\mbox{$\circledR$}}
+\newcommand{\smallreplacementp}{\mbox{$\textcircled{\rm\large r}$}}
+\newcommand{\zigzag}{\mbox{$\textcircled{\rm\large z}$}}
+\newcommand{\dsp}{\mbox{$\circledS$}}
+
+\title{\bf Revisiting the Zig-zag graph product \& USTCON and some of their applications to the complexity of space bounded computation}%their applications to space bounded complexity theory}%, its applications to USTCON and space bounded complexity theory}%in the complexity of space bounded computation}
+
+\author{\bf T. C. Vijayaraghavan\footnote{Email:~\tt tcvijay@gmail.com}}
+
+\date{\today}
+
+%\usepackage[includeheadfoot]{geometry}
+\usepackage[margin=1in]{geometry}
+%\usepackage{blindtext}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{refcount}
+%\pagestyle{fancy}
+%\pagestyle{headings}
+\fancypagestyle{plain}[fancy]{
+\fancyhf{}
+\fancyfoot[C]{\thepage}%~of~\getpagerefnumber{LastPage}}
+\renewcommand{\headrule}{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+%\cfoot{\thepage}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+In the year 2008, in his breakthrough paper \cite{Rei2008}, Omer Reingold has described an $O(\log n)$-space algorithm which determines if there exists an undirected path connecting any two vertices $s$ and $t$ in an input undirected graph $G$. The main component of the algorithm of Omer Reingold is the Zig-zag graph product \cite{RVW2002, Rei2008} using which it is possible to transform any undirected graph into an expander in $O(\log n)$ space, where $n$ is the number of vertices in the input undirected graph $G$. In this paper, we examine the zig-zag graph product, discuss its properties and explain the $O(\log n)$ space algorithm of Omer Reingold \cite{Rei2008} along with some applications of both of these to space bounded complexity theory.
+\end{abstract}
+
+\pagestyle{myheadings}
+\thispagestyle{plain}
+
+\section{Introduction}
+While P vs NP is inarguably the most important problem that has remained unsolved in Computational Complexity, whenever we devise algorithms to solve almost any NP-complete problem on Graph Theory such as Graph Coloring or Vertex Cut or Travelling Salesman Problem and so on, we assume that the graph given to us as input is connected. Very often it suffices that our algorithm obtains the solution to the given problem for each connected component of the input graph, since these solutions are combined to obtain a solution to the given input instance of the graph theoretic problem. Due to this reason, the problem of deciding if given two vertices $s$ and $t$ in an input graph $G$, whether there exists a path that connects $s$ and $t$ in $G$ is very fundamental and interesting. Let us call this problem as the $st$-connectivity problem (STCON).
+
+The standard and well known polynomial time graph traversal algorithms of Breadth-First Search (BFS) and Depth-First Search (DFS) solve the STCON when the input graph $G$ is directed or undirected. In the BFS algorithm, when a directed or an undirected graph is given as input, we systematically explore the input graph starting from $s$ by visiting new vertices along paths of shortest length in a breadth-wise manner. Here we form a directed tree called the BFS tree with the vertex $s$ as the root, and there exists a path between $s$ and $t$ in $G$ if and only if the vertex $t$ is in the BFS tree containing $s$ as the root. In the case of the DFS algorithm, if the input graph $G$ is directed, then we construct a maximal arborescence rooted at $s$ such that $t$ is in the same directed tree containing $s$ if and only if there exists a directed path from $s$ to $t$ in $G$ (an arborescence in a directed graph $G$ is a directed subgraph $H$ of $G$ such that every vertex has atmost one incoming edge and whose underlying undirected graph is a forest; an arborescence is maximal if it is not contained in any other arborescence of $G$). When the input graph $G$ is undirected, the DFS algorithm solves the $st$-connectivity problem similar to the case when $G$ is directed by considering each undirected edge as a pair of directed edges in opposite directions. Both these traversal algorithms have many applications to problems that can be solved in polynomial time. We refer those interested to \cite{CLR2022, Ski2020, KV2018} for more on these graph traversal algorithms.
+
+\subsection{Directed $st$-Connectivity}
+In Computational Complexity, the directed $st$-connectivity problem (DSTCON) is a well studied problem and it is known to be complete for the complexity class $\NL$ under logspace many-one reductions (see for example \cite[Chapter 4]{AB2009}). Let us denote the complement of our problem DSTCON by $\overline{\rm DSTCON}$ which is to decide if there does not exist any path from $s$ to $t$ in a directed graph $G$ given as input. It is a well known result that DSTCON is logspace many-one reducible to its complement $\overline{\rm DSTCON}$, which shows that $\NL =\coNL$ (for a nice algorithmic proof of this result, see \cite[Chapter 8]{Sip2013}). This result generalizes and it is celebrated as the well known Immerman-Szelepcs$\rm\acute{e}$nyi Theorem which states that NSPACE$(S(n))$=co-NSPACE$(S(n))$, where NSPACE$(S(n))$ is any non-deterministic space bounded complexity class that contains $\NL$ and $S(n)\in\Omega(\log n)$. Restricted versions of the directed $st$-connectivity problem, such as for planar graphs, grid graphs and graphs embedded on surfaces have been investigated and many interesting results on their computational complexity using logarithmic space bounded counting classes are known \cite{BTV2009, ABCDR2009}.
+
+\subsection{Undirected $st$-Connectivity}
+Similar to DSTCON, the undirected $st$-connectivity problem (USTCON) is formally defined as follows: given an undirected graph $G=(V,E)$ and vertices $s,t\in V$, the USTCON problem is to determine if there exists an undirected path connecting $s$ and $t$ in $G$. It has been proved, by Omer Reingold in \cite{Rei2008}, that the undirected $st$-connectivity problem (USTCON) is complete for the complexity class $\L$ under $\ACzero$ many-one reductions. In this paper, we are interested in revisiting this important result \cite{Rei2008}, and in explaining some key aspects of the $O(\log n)$ space algorithm of O. Reingold for USTCON. 
+
+\subsubsection{Results prior to O. Reingold's deterministic $O(\log n)$ space algorithm for USTCON}
+O. Reingold in his paper \cite[Introduction]{Rei2008} gives a nice account of the progress on the research work prior to obtaining a deterministic $O(\log n)$ space algorithm for USTCON starting from the randomized log-space algorithm due to Alelinuas {\em et.al.} \cite{AKLLR1979}. Following \cite{AKLLR1979},  using pseudo-random generators, \cite{AKS1987, BNS1989, NSW1989, Nis1992, INW1994} obtain results aimed towards full derandomation of the complexity class $\RL$, which would ultimately yield that USTCON is in $\L$. Continuing this approach, in \cite{ATWZ2000} it is shown that USTCON$\in \L^{4/3}$ (where $\L ^c$ is the complexity class of problems that can decided deterministically in space $\log ^c(\cdot )$). This  $\L^{4/3}$ space upper bound for USTCON shown in \cite{ATWZ2000} is the most space-efficient algorithm for USTCON before the breakthrough result of O. Reingold in \cite{Rei2008}, while V. Trifonov has independently presented an $O(\log n\log\log n)$-space deterministic algorithm for USTCON in \cite{Tri2005}.
+
+\subsubsection{O. Reingold's approach for USTCON by improving connectivity of graphs using graph products}
+The $O(\log n)$-space deterministic algorithm designed by O. Reingold in \cite{Rei2008} decides if there exists an undirected path connecting vertices $s$ and $t$ in the input graph $G$ by first improving the connectivity of vertices in $G$. Given an undirected graph $G$ as input, we have a simple algorithm to determine if there exists an undirected path connecting $s$ and $t$ in $G$: enumerate all paths of {\it small} length starting from the vertex $s$, and find out if the vertex $t$ is in any of the paths that we have enumerated. However this requires $G$ to be well connected, since otherwise we will be unable to cover all the vertices in the connected component containing $s$ using paths of {\it small} length. Moreover we need this algorithm to utilize only $O(\log n)$ space, where $n=|V(G)|$. To achieve this, O. Reingold uses the {\bf{zig-zag graph product}} invented in \cite{RVW2002}. Using powering of graphs and the zig-zag graph product it is possible, by following the algorithm described in \cite{Rei2008}, to transform the input graph $G$ into an {\it{expander graph $H$}} which has good {\it{expansion properties}}, most notable of which is that the diameter of $H$ is $O(\log n)$, where $n=|V(G)|$. As a result, by enumerating all paths of length $O(\log n)$ from the vertex $s$ it is possible to determine if $s$ and $t$ are connected in $G$ \cite{Rei2008}. It is a bit surprising to note that this entire algorithm of transforming $G$ into an expander graph $H$ and finally searching for the vertex $t$ at a distance $O(\log n)$ from $s$ is implementable using $O(\log n)$-space \cite{Rei2008}, where $n=|V(G)|$.
+
+\section{Basic definitions and results}
+An undirected graph is called as a multi-graph if it contains one or more parallel edges or self-loops on vertices. In all the definitions and results we prove in this paper, we assume that we deal with undirected graphs that are multi-graphs unless otherwise mentioned.
+\subsection{Graph representations}
+We recollect the following facts about graph representations from \cite{RVW2002, Rei2008}. There are several standard representations of graphs. For our results and purposes, we assume that the input graph $G$ is given in terms of its adjacency matrix, which is the matrix whose (non-negative, integral) entry $(u,v)$ equals the number of edges between $u$ and $v$ in $G$. Note that this representation allows graphs with self loops and parallel edges. As a result the graphs that we discuss may be simple or multi-graphs which means that vertices may have self-loops and parallel edges. A graph $G$ is undirected if and only if its adjacency matrix is symmetric (implying that for every pair of distinct vertices $u,v\in V(G)$ there exists a directed edge from $u$ to $v$ if and only if there exists a directed edge from $v$ to $u$).
+
+A graph is $D$-regular if the sum of entries in each row and in each column is $D$ (so exactly $D$ edges are incident to every vertex). For every integer $k$, let us denote by $[k]$ the set $\{1, 2, . . . , k\}$. Let $G$ be a $D$-regular undirected graph on $N$ vertices. A walk in a directed graph is a sequence of vertices $v_0\sim v_1\sim \cdots\sim  v_r$ such that there exists a directed edge from $v_i$ to $v_{i+1}$, where $1\leq i\leq r$. A walk in a directed graph is a {\it closed walk} if its first and last vertices are the same. When considering a walk on an undirected $D$-regular graph $G$, we would like to assume that the edges, incident with each vertex of $G$ are labeled from $1$ to $D$ in some arbitrary, but fixed, way. We can then talk about the $i^{th}$ edge incident to a vertex $v$, and similarly about the $i^{th}$ neighbor of $v$. A central insight of \cite{RVW2002} is that when taking a step on a graph from vertex $v$ to vertex $w$, it may be useful to keep track of the edge traversed to get to $w$ (rather than just remembering that we are now at $w$). This gives rise to a new representation of graphs through the following permutation on pairs of vertex name and edge label:
+\begin{definition}\label{rotationmap}{\rm \cite[Definition 2.1]{Rei2008}}
+For a $D$-regular undirected graph G, the rotation map $Rot_G : [N] \times [D] \rightarrow [N] \times [D]$ is defined as follows: $Rot_G (v, i ) = (w, j )$ if the $i^{th}$ edge incident to $v$ leads to $w$, and this edge is the $j^{th}$ edge incident to $w$.
+\end{definition}
+
+\subsection{Graph products}
+\begin{definition}\label{cartesianproduct}{\rm \cite[pp. 30]{BM2008}}
+The cartesian product of simple graphs $G$ and $H$ is the graph $G\Box H$ whose vertex set is $V(G)\times V(H)$ and whose edge set is the set of all pairs $((u_1,v_1),(u_2,v_2))$ such that either $(u_1,u_2)\in E(G)$ and $v_1=v_2$, or $(v_1,v_2)\in E(H)$ and $u_1=u_2$.
+\end{definition}
+Thus for each edge $(u_1,u_2)$ of $G$ and $(v_1,v_2)$ of $H$, there are four edges in $G\Box H$, namely $((u_1,v_1),(u_2,v_1))$, $((u_1,v_2),(u_2,v_2)$, $((u_1,v_1),(u_1,v_2))$, and $((u_2,v_1),(u_2,v_2))$. Note that for any two simple graphs $G$ and $H$, we have $G\Box H=H\Box G$.
+
+\begin{definition}\label{tensorproduct}{\rm \cite[Section 2.3, pp.168]{RVW2002}}
+We define the tensor product of two graphs $G_1$ and $G_2$, denoted by $G_1\otimes G_2$, by taking the tensor product of the adjacency matrices of $G_1$ and $G_2$. The set of vertices of $G_1\otimes G_2$ is the cartesian product of the sets of vertices of $G_1$ and $G_2$, and $(v_1,v_2)$ is adjacent to $(u_1,u_2)$ in $G_1\otimes G_2$ if and only if $v_j$ is adjacent to $u_j$ in $G_j$ for $i=1,2$.
+\end{definition}
+Note that for any two simple graphs $G$ and $H$, we have $G\otimes H=H\otimes G$.
+\begin{definition}\label{powering}{\rm \cite[pp. 82]{BM2008}}
+The $k^{th}$ power of a simple graph $G=(V,E)$ is the graph $G^k$ whose vertex set is $V$, two distinct vertices being adjacent in $G^k$ if and only if their distance in $G$ is atmost $k$. The graph $G^2$ is referred to as the square of $G$, the graph $G^3$ as the cube of $G$.
+\end{definition}
+Let $G$ be a undirected graph and let $A$ be its adjacency matrix. Let us consider $G$ as a directed graph $G'$ in which every edge is replaced by a pair of directed edges in the opposite directions and every self-loop in $G$ is replaced by a directed self-loop in $G'$. As a result, the number of directed closed walks of length $k$ in $G'$ is equal to the trace of $A^k$.
+
+Now let $G$ be an undirected graph, and without loss of generality assume that there exists a self-loop on every vertex of $G$. Let $A$ be the adjacency matrix of $G$, then $A^k$ is the adjacency matrix of $G^k$, for $k\in\N$. It is also easy to see that, for any square matrix $A$ and $k\in\Z^+$, the eigenvalues of $A^k$ are the $k^{th}$ powers of the eigenvalues of $A$ (see for example, \cite[Section 5.2]{Str2006}).
+
+While we need the above defined graph products to describe the $O(\log n)$-space deterministic algorithm in \cite{Rei2008}, we refer the interested reader to \cite[pp. 297, 364 \& 316]{BM2008} for some more graph products such as the strong product, weak product and composition product (also known as the lexicographic product) of graphs.
+
+\section{Expander graphs}
+We now introduce expander graphs which are sparse graphs that are $D$-regular, for a constant $D>0$ having linear number of edges, however have good connectivity properties in terms of {\it edge expansion} or {\it vertex expansion}. The spectrum of a graph $G$ is the set of eigenvalues of the adjacency matrix $A$ of $G$. We refer to \cite[Chapters 2 and 3]{Big1993} for an easy introduction to combinatorial properties of the spectrum of ordinary and regular graphs. From these properties it follows that the largest eigenvalue of a $D$-regular undirected graph $G$ is $D$, and $G$ is connected if and only if the multiplicity of $D$ in the spectrum of $G$ is $1$. In addition, $D=\lambda _1\geq \lambda _2\geq\cdots\geq\lambda _n\geq -D$, where $\lambda _i$ is the $i^{th}$ eigenvalue of the adjacency matrix $A$ of a $D$-regular graph $G$, for $1\leq i\leq n$. Also $G$ is non-bipartite if and only if $\lambda _n>-D$.
+
+\subsection{Motivaton towards $\lambda _2$}
+In the eigenvalue spectrum of the adjacency matrix $A$ of a $D$-regular graph $G$, the second largest eigenvalue ($\lambda _2$) of $A$ is a key parameter that indicates the expansion properties of $G$. Now we motivate the importance of the second largest eigenvalue ($\lambda _2$) of the adjacency matrix $A$ of a $D$-regular graph $G$.
+\begin{definition}
+Let $G$ be a $D$-regular graph on $N$ vertices and let $A$ be the adjacency matrix of $G$. We say that $G$ is a $(N,D,\lambda )$-expander if the second largest eigenvalue of $A$ (denoted by $\lambda _2$) is atmost $\lambda$.
+\end{definition}
+
+\begin{definition}{\rm \cite[Definition 2.1]{HLW2006}}
+Let $G$ be a $D$-regular graph on $N$ vertices and let $S\subseteq V(G)$ such that $|S|\leq N/2$. Let us denote the set of edges connecting a vertex in $S$ and a vertex in $\overline{S}$ by $E(S,\overline{S})$. We define the edge-expansion ratio of $G$ as
+\[
+h(G)=\min _{\{S||S|\leq \frac{n}{2}\}}\frac{|E(S,\overline{S})|}{|S|}
+\]
+\end{definition}
+
+\begin{theorem}{\rm {\bf (Cheeger's inequality)}\cite{Che1970},\cite[pp. 454]{HLW2006}}\label{cheeger}
+Let $G$ be a $D$-regular graph and let $A$ be the adjacency matrix of $G$ with spectrum $\lambda _1\geq \lambda _2\geq\cdots\geq \lambda _n$. Then
+\[
+\frac{D-\lambda _2}{2}\leq h(G)\leq \sqrt{2D(D-\lambda _2)}.
+\]
+\end{theorem}
+The above theorem due to J. Cheeger \cite{Che1970} signifies the importance of $(D-\lambda _2)$ known as the {\it spectral gap} of $G$. In particular, a $D$-regular graph $G$ has an expansion ratio $h(G)$ bounded away from zero if and only if its spectral gap $(D-\lambda _2)$  is bounded away from zero (for a proof of Theorem \ref{cheeger} refer \cite{ASS2008}).
+
+The following theorem 
+
+EML.
+
+State/mention about the converse of EML due to Bilu-Linial
+
+
+\newpage
+$\replacementp$
+$\smallreplacementp$
+$\zigzag$
+$\dsp$
+
+Define Ramanujan graphs \cite[pp. 488]{HLW2006}.
+
+Gabber-Galil graph is undirected expander example \cite[pp. 503]{HLW2006}.
+
+The adjacency matrix $A$ of a $D$-regular undirected graph $G$ divided by $D$ is called the normalized adjacency matrix of $G$ and it is denoted by $M$ \cite[Section 2.2]{Rei2008}.
+
+
+Squaring, its properties--examples
+
+Powering, its properties--examples refer BATS Fact 2 supply proof
+
+Cartesian product, its properties--examples
+
+properties of Tensor products refer BATS Fact 3. supply proof
+
+Squaring, Tensoring and Undirectedness refer BATS
+
+Alon-Spencer Probabilistic method book and the key result, its consequence to the result in [RVW2002] by Alon-Sudakov: give a proof of it.
+
+relevance of skew-symmetric adjacency matrix after assigning directions to edges?
+
+\section{Zig-zag graph product}
+
+Rotation maps: refer \cite{RVW2002, Rei2008} and BATS.
+
+zig-zag product--two graphs involved with condition on the two graphs--asymmetric--examples and figures
+
+zig-zag product of bipartite graphs \cite{HLW2006}, [KSR]
+
+k-step zig-zag product from BATS paper
+
+\subsection{Some more graph products for regular graphs}
+Replacement product--two graphs involved with condition on the two graphs--asymmetric--examples and figures-from BATS paper and [Ta-Shma] paper-figures from Kelly-Sridhara-Rosenthal
+
+balanced replacement product \cite{RVW2002}
+
+s-wide replacement product[Ta-Shma]
+\subsubsection{Derandomized squaring}
+derandomized squaring--two graphs involved with condition on the two graphs--asymmetric
+
+
+
+\section*{Acknowledgements}
+
+
+\begin{thebibliography}{10}
+
+\bibitem[AB09]{AB2009}
+{\sc Sanjeev Arora and Boaz Barak}. {Computational Complexity: A Modern Approach}. {\em Cambridge University Press}, 2009.
+
+\bibitem[ABC$^+$09]{ABCDR2009}
+{\sc Eric Allender, David A. Mix Barrington, Tanmoy Chakraborty, Samir Datta, and Sambuddha Roy}. {\em Planar and Grid Graph Reachability Problems}. Theory of Computing Systems, 45: 675-723, 2009.
+
+\bibitem[AKL$^+$79]{AKLLR1979}
+{\sc Romas Aleliunas, Richard M. Karp, Richard J. Lipton, Laszlo Lov\'{a}sz, and Charles Rackoff}. {Random walks, universal traversal sequences, and the complexity of maze problems}. In {\em Proceedings of the 20th Annual Symposium on Foundations of Computer Science (FOCS)}, IEEE Computer Society Press, 218-223, 1979.
+
+\bibitem[AKS87]{AKS1987}
+{\sc Miklos Ajtai, J. Komlos, and Endre Szemeredi}. {Deterministic simulation in LOGSPACE}. In {\em Proceedings of the 19th Annual ACM Symposium on Theory of Computing (STOC)}, ACM, 132-140, 1987.
+
+\bibitem[ASS08]{ASS2008}
+{\sc Noga Alon, Oded Schwartz, and Asaf Shapira}. {\em An elementary construction of constant-degree expanders}. Combinatorics, Probability and Computing, 17(3): 319-327, 2008.
+
+\bibitem[ATW$^+$00]{ATWZ2000}
+{\sc Roy Armoni, Amnon Ta-Shma, Avi Wigderson, and Shiyu Zhou}. {\em An $O(\log (n)^{4/3})$ space algorithm for {\rm(}s,t{\rm )} connectivity in undirected graphs}. Journal of the ACM, 47(2): 294-311, 2000.
+
+\bibitem[BATS11]{BATS2011}
+{\sc Avraham Ben-Aroya and Amnon Ta-Shma}. {\em A combinatorial construction of almost-Ramanujan graphs using the Zig-zag product}. SIAM Journal on Computing, 40(2): 267-290, 2011.
+
+\bibitem[Big93]{Big1993}
+{\sc Norman Biggs}. {Algebraic Graph Theory}, Second Edition. {\em Cambridge University Press}, 1993.
+
+\bibitem[BM08]{BM2008}
+{\sc J. A. Bondy and U. S. R. Murty}. {Graph Theory}. {\em Graduate Texts in Mathematics, volume 244, Springer}, 2008.
+
+\bibitem[BNS89]{BNS1989}
+{\sc Laszlo Babai, Noam Nisan, Mario Szegedy}. {Multiparty protocols, pseudorandom generators for logspace, and time-space trade-offs}. In {\em Proceedings of the 21st Annual ACM Symposium on Theory of Computing (STOC)}, ACM, 204-232, 1989.
+
+\bibitem[BTV09]{BTV2009}
+{\sc Chris Bourke, Raghunath Tewari, and N. V. Vinodchandran}. {\em Directed Planar Reachability Is in Unambiguous Log-Space}. ACM Transactions on Computation Theory, Vol. 1, No. 1, Article 4, February 2009.
+
+\bibitem[Che70]{Che1970}
+{\sc J. Cheeger}. {\em A lower bound for the smallest eigenvalue of the Laplacian}. In {\em Problems in analysis (Papers dedicated to Salomon Bochner, 1969)}, pp. 195–199, Princeton University Press, Princeton, NJ, 1970.
+
+\bibitem[CLR22]{CLR2022}
+{\sc Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein}. {Introduction to Algorithms}. Fourth edition, {\em MIT Press}, 2022.
+
+\bibitem[HLW06]{HLW2006}
+{\sc Shlomo Hoory, Nathan Linial, and Avi Wigderson}. {\em Expander Graphs and their Applications}. Bulletin of the American Mathematical Society (New Series), 43(4): 439-561, 2006
+
+\bibitem[INW94]{INW1994}
+{\sc Russell Impagliazzo, Noam Nisan, and Avi Wigderson}. {Pseudorandomness for network algorithms}. In {\em Proceedings of the 26th Annual ACM Symposium on Theory of Computing (STOC)}, ACM, 356-364, 1994.
+
+\bibitem[KV18]{KV2018}
+{\sc Bernhard Korte and Jens Vygen}. {Combinatorial Optimization: Theory and Algorithms}. Sixth edition, {\em Springer}, 2018.
+
+\bibitem[Nis92]{Nis1992}
+{\sc Noam Nisan}. {\em Pseudo-random generators for space-bounded computation}. Combinatorica, 12(4): 449-461, 1992.
+
+\bibitem[NSW89]{NSW1989}
+{\sc Noam Nisan, Endre Szemer\'{e}di, Avi Wigderson}. {Undirected connectivity in $o(log ^{1.5}n)$ space}. In {\em Proceedings of the 30th Foundations of Computer Science (FOCS)}, IEEE Computer Society Press, 24-29, 1989.
+
+\bibitem[Rei08]{Rei2008}
+{\sc Omer Reingold}. {\em Undirected Connectivity in Log-Space}. Journal of the ACM, Vol. 55, No. 4, Article 17, September 2008.
+
+\bibitem[RVW02]{RVW2002}
+{\sc Omer Reingold, Salil Vadhan, and Avi Wigderson}. {\em Entropy Waves, the Zig-Zag Graph Product, and New Constant-Degree Expanders}. Annals of Mathematics, Second Series, Vol. 155(1): 157-187, 2002.
+
+\bibitem[Sip13]{Sip2013}
+{\sc Michael Sipser}. {Introduction to the Theory of Computation}, Third edition. {\em Cengage Learning}, 2013, Indian reprint, 2018.
+
+\bibitem[Ski20]{Ski2020}
+{\sc Steven S. Skiena}. {The Algorithm Design Manual}, Third edition. {\em Springer}, 2020.
+
+\bibitem[Str06]{Str2006}
+{\sc Gilbert Strang}. {Linear Algebra and its Applications}, Fourth edition. {\em Cengage Learning}, 2006, Fifteenth Indian reprint, 2014.
+
+\bibitem[Tri05]{Tri2005}
+{\sc Vladimir Trifinov}. {An O(log n log log n) space algorithm for undirected s,t-connectivity}. In {\em Proceedings of the 37th ACM Symposium on Theory of Computing (STOC)}, ACM, 626-633, 2005.
+
+\end{thebibliography}
+
+\section*{Appendix}
+\begin{figure}[htbp]
+\begin{center}\includegraphics[scale=0.95]{zig-zag_product_KSR_paper.jpg}\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}\includegraphics[scale=0.8]{replacement_product_BATS_paper.jpg}\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}\includegraphics[scale=0.8]{replacement_product_KSR_paper.jpg}\end{center}
+\end{figure}
+
+\end{document}
+
+
+
+%Give a datewise account of RVW and Rei08. Also published in SIAM J.COMP in 2005.
+
+Explain graph products, giving an account of some more problems involving graph products and different types of graph products.
+
+Explain short comings of graph products: mainly powering and replacement product towards obtaining a deterministic O(log n) space algorithm for USTCON.
+
+Expanders, an intro
+
+O. Reingold's deterministic algorithm:
+
+Consequences of O. Reingold's algorithm:
+1. SL=L
+
+2. Constructing UTS: universal traversal sequences (introduced by Stephen Cook in the late 1970s \cite{AKLLR1979}) can be constructed in space $\log ^2(\cdot )$ in \cite{Nis1992a}. Also say about UES.
+
+3. Making every undirected connected graph into an almost complete graph using zig-zag graph product.
+
+ADDENDUM: a compendium of problems complete for SL and L
+
