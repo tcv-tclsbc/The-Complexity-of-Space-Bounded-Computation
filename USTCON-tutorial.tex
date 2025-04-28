@@ -34,7 +34,7 @@
 \newtheorem{claimnum}{Theorem}
 \newtheorem{claimn}[claimnum]{Claim}
 
-\newcommand{\bproof}{\noindent{\it Proof}}
+\newcommand{\bproof}{\noindent{\bf Proof}}
 \newcommand{\eproof}{\hspace*{\fill}$\rule{2mm}{2mm}$~~~~\bigskip}
 \renewenvironment{proof}{\bproof. }{\eproof}
 \newenvironment{psketch}{\bproof~{\it Sketch}. }{\eproof}
@@ -67,6 +67,7 @@
 \newcommand{\NCfour}{\mbox{$\NC ^4$}}
 
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
 \newcommand{\boldZ}{\bf\mathbb{\bf Z}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -103,7 +104,7 @@
 
 
 \begin{abstract}
-In the year 2008, in his breakthrough paper \cite{Rei2008}, Omer Reingold has described an $O(\log n)$-space algorithm which determines if there exists an undirected path connecting any two vertices $s$ and $t$ in an input undirected graph $G$. The main component of the algorithm of Omer Reingold is the Zig-zag graph product \cite{RVW2002, Rei2008} using which it is possible to transform any undirected graph into an expander in $O(\log n)$ space, where $n$ is the number of vertices in the input undirected graph $G$. In this paper, we examine the zig-zag graph product, discuss its properties and explain the $O(\log n)$ space algorithm of Omer Reingold \cite{Rei2008} along with some applications of both of these to space bounded complexity theory.
+In the year 2008, in his breakthrough paper \cite{Rei2008}, Omer Reingold has described an $O(\log n)$-space algorithm which determines if there exists an undirected path connecting any two vertices $s$ and $t$ in an input undirected graph $G$. The main component of the algorithm of Omer Reingold is the Zig-zag graph product \cite{RVW2002, Rei2008} using which it is possible to transform any undirected graph into an expander in $O(\log N)$ space, where $N$ is the number of vertices in the input undirected graph $G$. In this paper, we examine the zig-zag graph product, discuss its properties and explain the $O(\log N)$ space algorithm of Omer Reingold \cite{Rei2008} along with some applications of both of these to space bounded complexity theory.
 \end{abstract}
 
 \pagestyle{myheadings}
@@ -124,7 +125,7 @@ Similar to DSTCON, the undirected $st$-connectivity problem (USTCON) is formally
 O. Reingold in his paper \cite[Introduction]{Rei2008} gives a nice account of the progress on the research work prior to obtaining a deterministic $O(\log n)$ space algorithm for USTCON starting from the randomized log-space algorithm due to Alelinuas {\em et.al.} \cite{AKLLR1979}. Following \cite{AKLLR1979},  using pseudo-random generators, \cite{AKS1987, BNS1989, NSW1989, Nis1992, INW1994} obtain results aimed towards full derandomation of the complexity class $\RL$, which would ultimately yield that USTCON is in $\L$. Continuing this approach, in \cite{ATWZ2000} it is shown that USTCON$\in \L^{4/3}$ (where $\L ^c$ is the complexity class of problems that can decided deterministically in space $\log ^c(\cdot )$). This  $\L^{4/3}$ space upper bound for USTCON shown in \cite{ATWZ2000} is the most space-efficient algorithm for USTCON before the breakthrough result of O. Reingold in \cite{Rei2008}, while V. Trifonov has independently presented an $O(\log n\log\log n)$-space deterministic algorithm for USTCON in \cite{Tri2005}.
 
 \subsubsection{O. Reingold's approach for USTCON by improving connectivity of graphs using graph products}
-The $O(\log n)$-space deterministic algorithm designed by O. Reingold in \cite{Rei2008} decides if there exists an undirected path connecting vertices $s$ and $t$ in the input graph $G$ by first improving the connectivity of vertices in $G$. Given an undirected graph $G$ as input, we have a simple algorithm to determine if there exists an undirected path connecting $s$ and $t$ in $G$: enumerate all paths of {\it small} length starting from the vertex $s$, and find out if the vertex $t$ is in any of the paths that we have enumerated. However this requires $G$ to be well connected, since otherwise we will be unable to cover all the vertices in the connected component containing $s$ using paths of {\it small} length. Moreover we need this algorithm to utilize only $O(\log n)$ space, where $n=|V(G)|$. To achieve this, O. Reingold uses the {\bf{zig-zag graph product}} invented in \cite{RVW2002}. Using powering of graphs and the zig-zag graph product it is possible, by following the algorithm described in \cite{Rei2008}, to transform the input graph $G$ into an {\it{expander graph $H$}} which has good {\it{expansion properties}}, most notable of which is that the diameter of $H$ is $O(\log n)$, where $n=|V(G)|$. As a result, by enumerating all paths of length $O(\log n)$ from the vertex $s$ it is possible to determine if $s$ and $t$ are connected in $G$ \cite{Rei2008}. It is a bit surprising to note that this entire algorithm of transforming $G$ into an expander graph $H$ and finally searching for the vertex $t$ at a distance $O(\log n)$ from $s$ is implementable using $O(\log n)$-space \cite{Rei2008}, where $n=|V(G)|$.
+The $O(\log N)$-space deterministic algorithm designed by O. Reingold in \cite{Rei2008} decides if there exists an undirected path connecting vertices $s$ and $t$ in the input graph $G$ by first improving the connectivity of vertices in $G$. Given an undirected graph $G$ as input, we have a simple algorithm to determine if there exists an undirected path connecting $s$ and $t$ in $G$: enumerate all paths of {\it small} length starting from the vertex $s$, and find out if the vertex $t$ is in any of the paths that we have enumerated. However this requires $G$ to be well connected, since otherwise we will be unable to cover all the vertices in the connected component containing $s$ using paths of {\it small} length. Moreover we need this algorithm to utilize only $O(\log N)$ space, where $N=|V(G)|$. To achieve this, O. Reingold uses the {\bf{zig-zag graph product}} invented in \cite{RVW2002}. Using powering of graphs and the zig-zag graph product it is possible, by following the algorithm described in \cite{Rei2008}, to transform the input graph $G$ into an {\it{expander graph $H$}} which has good {\it{expansion properties}}, most notable of which is that the diameter of $H$ is $O(\log N)$, where $N=|V(G)|$. As a result, by enumerating all paths of length $O(\log n)$ from the vertex $s$ it is possible to determine if $s$ and $t$ are connected in $G$ \cite{Rei2008}. It is a bit surprising to note that this entire algorithm of transforming $G$ into an expander graph $H$ and finally searching for the vertex $t$ at a distance $O(\log N)$ from $s$ is implementable using $O(\log N)$-space \cite{Rei2008}, where $N=|V(G)|$.
 
 \section{Basic definitions and results}
 An undirected graph is called as a multi-graph if it contains one or more parallel edges or self-loops on vertices. In all the definitions and results we prove in this paper, we assume that we deal with undirected graphs that are multi-graphs unless otherwise mentioned.
@@ -155,8 +156,8 @@ Now let $G$ be an undirected graph, and without loss of generality assume that t
 
 While we need the above defined graph products to describe the $O(\log n)$-space deterministic algorithm in \cite{Rei2008}, we refer the interested reader to \cite[pp. 297, 364 \& 316]{BM2008} for some more graph products such as the strong product, weak product and composition product (also known as the lexicographic product) of graphs.
 
-\section{Expander graphs}
-We now introduce expander graphs which are sparse graphs that are $D$-regular, for a constant $D>0$ having linear number of edges, however have good connectivity properties in terms of {\it edge expansion} or {\it vertex expansion}. The spectrum of a graph $G$ is the set of eigenvalues of the adjacency matrix $A$ of $G$. We refer to \cite[Chapters 2 and 3]{Big1993} for an easy introduction to combinatorial properties of the spectrum of ordinary and regular graphs. From these properties it follows that the largest eigenvalue of a $D$-regular undirected graph $G$ is $D$, and $G$ is connected if and only if the multiplicity of $D$ in the spectrum of $G$ is $1$. In addition, $D=\lambda _1\geq \lambda _2\geq\cdots\geq\lambda _n\geq -D$, where $\lambda _i$ is the $i^{th}$ eigenvalue of the adjacency matrix $A$ of a $D$-regular graph $G$, for $1\leq i\leq n$. Also $G$ is non-bipartite if and only if $\lambda _n>-D$.
+\section{Expander graphs}\label{expandergraphs}
+We now introduce expander graphs which are sparse graphs that are $D$-regular, for a constant $D>0$ having linear number of edges, however have good connectivity properties in terms of {\it edge expansion} or {\it vertex expansion}. The spectrum of a graph $G$ is the set of eigenvalues of the adjacency matrix $A$ of $G$. We refer to \cite[Chapters 2 and 3]{Big1993} for an easy introduction to combinatorial properties of the spectrum of ordinary and regular graphs. From these properties it follows that the largest eigenvalue of a $D$-regular undirected graph $G$ is $D$, and $G$ is connected if and only if the multiplicity of $D$ in the spectrum of $G$ is $1$. In addition, $D=\lambda _1\geq \lambda _2\geq\cdots\geq\lambda _N\geq -D$, where $\lambda _i$ is the $i^{th}$ eigenvalue of the adjacency matrix $A$ of a $D$-regular graph $G$, for $1\leq i\leq N$. Also $G$ is non-bipartite if and only if $\lambda _N>-D$.
 
 \subsection{Motivaton towards $\lambda _2$}
 In the eigenvalue spectrum of the adjacency matrix $A$ of a $D$-regular graph $G$, the second largest eigenvalue ($\lambda _2$) of $A$ is a key parameter that indicates the expansion properties of $G$. Now we motivate the importance of the second largest eigenvalue ($\lambda _2$) of the adjacency matrix $A$ of a $D$-regular graph $G$.
@@ -177,13 +178,142 @@ Let $G$ be a $D$-regular graph and let $A$ be the adjacency matrix of $G$ with s
 \frac{D-\lambda _2}{2}\leq h(G)\leq \sqrt{2D(D-\lambda _2)}.
 \]
 \end{theorem}
-The above theorem due to J. Cheeger \cite{Che1970} signifies the importance of $(D-\lambda _2)$ known as the {\it spectral gap} of $G$. In particular, a $D$-regular graph $G$ has an expansion ratio $h(G)$ bounded away from zero if and only if its spectral gap $(D-\lambda _2)$  is bounded away from zero (for a proof of Theorem \ref{cheeger} refer \cite{ASS2008}).
+The above theorem due to J. Cheeger \cite{Che1970} signifies the importance of $(D-\lambda _2)$ known as the {\it spectral gap} of $G$. In particular, a $D$-regular graph $G$ has an expansion ratio $h(G)$ bounded away from zero if and only if its spectral gap $(D-\lambda _2)$  is bounded away from zero.
 
-The following theorem 
+\begin{proof}(from \cite[Theorem 1]{ASS2008})\newline{\bf ~Proof of left inequality:} Let $A$ be the adjacency matrix of $G$ and note that as $A$ is symmetric we have $\lambda_2=\max_{0\neq x\perp 1^n}\langle xA,x\rangle/\langle x,x\rangle$. For a set $S\subseteq V(G)$ let $x_S$ be the vector satisfying $x_i=1$ when $i\in S$ and $x_i=0$ otherwise, and note that $\langle x_SA,x_S\rangle=2e(S)$ and $\langle x_SA,x_S\rangle=e(S,\overline{S})$. Set $x=|\overline{S}|\cdot x_S-|S|\cdot x_{\overline{S}}$ and note that $x\perp 1^n$. Therefore,
+\begin{eqnarray}\label{cheeger-eqn}
+\lambda_2(|S|+|\overline{S}|)|S||\overline{S}|=\lambda_2\langle x,x\rangle\geq\langle xA,x\rangle=2|S|^2e(\overline{S})+2|\overline{S}|^2e(S)-2|S||\overline{S}|e(S,\overline{S})|.
+\end{eqnarray}
+As $G$ is $D$-regular, we have $e(S)=\frac{1}{2}(d|S|-e(S,\overline{S}))$ and $e(\overline{S})=\frac{1}{2}(d|\overline{S}|-e(S,\overline{S}))$. Plugging this into (\ref{cheeger-eqn}), solving for $e(S,\overline{S})$ and using $|S|\leq n/2$, we complete the proof by inferring that
+\[
+e(S,\overline{S})\geq (d-\lambda_2)|S||\overline{S}|/n\geq \frac{1}{2}(d-\lambda_2)|S|.
+\]
+{\bf Proof of right inequality:} Let $Q=DI-A$ be Laplacian of $G$. Our goal is to prove that all but one of the eigenvalues of $Q$ are at least $\frac{1}{2}\delta^2D$. Let $z=(z_1,z_2,\ldots ,z_n)$ be an eigenvector of $Q$ with the smallest nontrivial eigenvalue $\lambda$, where $V(G)=\{1,2,\ldots n\}$. Recall that for every set $U$ of at most half the vertices of $G$ there are at least $c|U|$ edges between $U$ and its complement, where $c=\delta D$ is some positive constant. Withour loss of generality assume that $m\leq n/2$ of the entries of $z$ are positive (otherwise, replace $z$ by $-z$), and that $z_1\geq z_2\cdots\geq z_m\geq 0\geq z_{m+1}\geq\cdots \geq z_n$. Define $x_i=z_i$ for $i\leq m$, and $x_i=0$ otherwise. Since $x_j=0$ for all $j\geq n/2$,
+\begin{eqnarray}\label{cheeger-eqn2}
+\sum_{ij\in E(G)}|x_i^2-x_j^2|=\sum_{ij\in E,i<j}(x_i^2-x_j^2)\geq \sum_{i:i<n/2}(x_i^2-x_{i+1}^2)ci=c\sum_{i=1}^nx_i^2.
+\end{eqnarray}
+Note that $(Qz)_i=\lambda z_i$ for all $i$ and hence $\lambda =\frac{\sum_{i=1}^m(Qz)_iz_i}{\sum_{i=1}^mz_i^2}$. However,
+\[
+\sum_{i=1}^m(Qz)_iz_i=\sum_{i=1}^m(dz_i^2-\sum_{j,ij\in E}z_iz_j)=\sum_{i,j\leq m, ij\in E}(z_i-z_j)^2+\sum_{i\leq m,j>m,ij\in E}z_i(z_i-z_j)\geq \sum_{ij\in E}(x_i-x_j)^2.
+\]
+As $\sum_{i=1}^mz_i^2=\sum_{i=1}^nx_i^2$ we conclude, using Cauchy-Schwartz inequality (twice) that
+\[
+\lambda\geq\frac{\sum_{ij\in E}(x_i-x_j)^2}{\sum_{i=1}^nx_i^2}=\frac{\sum_{ij\in E}(x_i-x_j)^2\sum_{ij\in E}(x_i+x_j)^2}{\sum_ix_i^2\sum_{ij\in E}(x_i+x_j)^2}\geq \frac{(\sum_{ij\in E}|x_i^2-x_j^2|)^2}{\sum_ix_i^22D\sum_ix_i^2}\geq \frac{c^2}{2D},
+\]
+where the last inequality follows from (\ref{cheeger-eqn2}). Therefore, $\lambda\geq \frac{c^2}{2D}=\frac{1}{2}\delta^2D$.
+\end{proof}
 
-EML.
+\subsection{Existence of Expander graphs}
+The existence of expander graphs was first proved by M. S. Pinsker \cite{Pin1973},\cite[pp.152]{AS2016}. As stated in \cite[pp. 158]{RVW2002}, standard probabilistic arguments (\cite{Pin1973}) show that almost every constant ($\geq 3$) degree graph is an expander (also see \cite[Theorem 2]{ASS2008}). We recall (as stated in \cite[pp. 343]{JM1987}) that the first explicit constructions of expanders are due to G. A. Margulis and also due to Gabber and Galil \cite{GG1981}. An elementary example of undirected $3$-regular expander graphs on $p$ vertices, where $p$ is a prime, is a Cayley graph defined as follows: let $G=(\Z_p,E)$, where for any vertex $x\in\Z_p$ edges $(x,x+1),(x,x-1)$ and $(x,x^{-1})$ are in $E$. Here we assume that the multiplicative inverse of $x$ is $x^{-1}$ and that the multiplicative inverse of $0$ is itself.
 
-State/mention about the converse of EML due to Bilu-Linial
+\begin{definition}
+Let $G=(V,E)$ be a simple undirected graph and let $N=|V|$. For any $S\subseteq V$, we denote the set of neighbors of vertices in $S$ by $\Gamma(S)$. We say that $G$ is an $(\alpha(N),D-2)$-expander if for every $S\subseteq V$ such that $|S|=\alpha(N)$ we have $\Gamma(S)\geq (D-2)|S|$.
+\end{definition}
+
+\begin{theorem}\label{bipartiteexpanderexists}
+Let $\mathcal{G}_{N,D}$ be the set of simple undirected bipartite graphs with bipartite sets $L, R$ of size $N$ each, and which is left regular having degree $D$ for every vertex in $L$. Then for any $D$, there exists an $\alpha(D)>0$ such that for all $N$
+\[
+\Pr [G{~is~an~}(\alpha(N),D-2){\textrm{-}expander}]\geq1/2,
+\]
+where $G$ is chosen uniformly at random from $\mathcal{G}_{N,D}$.
+\end{theorem}
+\begin{proof}
+Define
+\[
+p_K=\Pr[\exists S\subseteq L:|S|=k,|\Gamma(S)|<(D-2)|S|].
+\]
+So $G$ is not an $(\alpha N,D-2)$-expander if and only if $\sum_kp_k>0$.
+
+Assume that there is a set of size $K$ and $|\Gamma (S)|<(D-2)|S|$. Then there are at least $2K$ repeats among all the neighbors of vertices in $S$. We calculate the quantity,
+\[
+\Pr[{\rm at~least~\mathrm{2K}~repeats~among~all~the~neighbors~of~vertices~in~}\mathrm{S}]\leq\left( \begin{array}{c}KD\\ 2K\end{array}\right)\left(\frac{KD}{N}\right)^{2K}.
+\]
+Therefore,
+\begin{eqnarray*}
+p_K&\leq&\left(\begin{array}{c}N\\K\end{array}\right)\left( \begin{array}{c}KD\\ 2K\end{array}\right)\left(\frac{KD}{N}\right)^{2K}\\
+&\leq&\begin{array}{c}\left(\frac{N\mathrm{e}}{K}\right)^K\end{array}\cdot\begin{array}{c}\left(\frac{KD\mathrm{e}}{2K}\right)^{2K}\end{array}\cdot\begin{array}{c}\left(\frac{KD}{N}\right)^{2K}\end{array}\\
+&\leq&\begin{array}{c}\left(\frac{cKD^4}{N}\right )^K\end{array},
+\end{eqnarray*}
+where $c=\mathrm{e}^3$. By setting $\alpha=1/(cD^4)$ and $K\leq \alpha N$, we know that $p_K\leq 4^{-K}$ and
+\[
+\Pr[G~{\rm is~not~an~(}\alpha N,D-2){\rm -expander}]\leq \sum_{k=1}^{\alpha N}p_k\leq\sum_{k=1}^{\alpha N}4^{-k}\leq 1/2.
+\]
+\end{proof}
+\begin{corollary}
+Let $G$ be a simple undirected graph chosen at random from the set of all simple $D$-regular undirected graphs on $N$ vertices. Then, for any $D$, there exists an $\alpha (D)>0$ such that for all $N$,
+\[
+\Pr [G{~is~an~}(\alpha(N),D-2){\textrm{-}expander}]\geq1/2.
+\]
+\end{corollary}
+\begin{proof}
+Given an $D$-regular undirected graph $G$ on $\{1,\ldots N\}$ vertices, let us consider the $D$-regular undirected bipartite graph $H$ on $2N$ vertices, labeled by $\{1,\ldots ,2N\}$, obtained by having a partition of the vertex set of $H$ into $L=\{1,\ldots N\}$ and $R=\{N+1,\ldots ,2N\}$ containing $N$ vertices each such that for every undirected edge $(i,j)$ in $G$ there exists an undirected edge $(i,j+N)$ in $H$. It is then easy to see that $G$ is an $(\alpha(D),D-2)$-expander if and only if $H$ is also an $(\alpha(D),D-2)$-expander. Our result now follows from  Theorem \ref{bipartiteexpanderexists}.
+\end{proof}
+
+Several explicit constructions of expanders which are Cayley graphs are known. Constructions of families of bipartite expanders which are Cayley graphs having constant degree (5, 7 and so on) due to \cite{GG1981,JM1987} are some of the earliest examples of expanders. As stated in \cite[pp.153]{AS2016}: It is known (see \cite{Nil1991}) that the second largest eigenvalue of any $D$-regular graph with diameter $k$ is at least $2\sqrt{D-1}(1-O(1/k))$. Therefore, in any infinite family of $D$-regular graphs, the limsup of of the second largest eigenvalue is at least $2\sqrt{D-1}$ (also see \cite[Proposition 4.2]{LPS1988}). The importance of the number $2\sqrt{D-1}$ is due to N. Alon and R. Boppana, known to us from \cite{Alo1986}.
+\begin{definition}{\rm \cite[Definition 1.1]{LPS1988}}
+Let $X_{N,D}$ be a $D$-regular graph on $N$ vertices. A graph $X_{N,D}$ is a {\bf Ramanujan graph} if $\lambda_2(X_{N,D})\leq 2\sqrt{D-1}$.
+\end{definition}
+A. Lubotzky, R. Phillips and P. Sarnak \cite{LPS1988} have given explicit constructions of infinite families of $D$-regular Cayley graphs $G_i$, with the second largest eigenvalue $\lambda_2(G_i)\leq 2\sqrt{D-1}$ and hence these graphs are Ramanujan graphs.
+
+\subsection{Vertex expansion and Spectral expansion}
+
+$(N,D,\lambda)$-expander graphs
+
+\subsection{Significance of $\lambda_2$}
+The following theorem, known as the Expander Mixing Lemma, shows that every $(N,D,\lambda )$-expander graph is close to acting as a random $D$-regular graph on $N$ vertices.
+\begin{theorem}{\rm \cite{AC1988}}
+Let $G=(V,E)$ be a $D$-regular, $N$-vertex graph with spectral expansion $\lambda$. Then $\forall S,T\subseteq V$, we have
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |\leq \lambda \sqrt{|S||T|},
+\]
+where $E(S,T)$ is the set of edges with one end-point in $S$ and the other end-point in $T$.
+\end{theorem}
+Note that in the above statement, $|E(S,T)|$ is the number of edges with one end-point in $S$ and the other end-point in $T$. Also in a random $D$-regular graph $G$, the expected number of edges between $S$ and $T$ in $G$ is $\frac{D|S|\cdot |T|}{N}$, since the $\Pr [{\rm choosing~a~vertex~randomly~from~any}~S\subseteq V]=\frac{|S|}{N}$ and $|E|\leq ND$. As a result smaller $\lambda$ implies that the expander graph $G$ is more random.
+
+\begin{proof}
+Let $A$ be the adjacency matrix of $G$. Since $G$ is undirected, $A$ is real and symmetric. As a result its eigenvalues are real and there exists a set of orthonormal eigenvectors $\{v_1,\ldots v_N\}$ of $A$ which is a basis of $\R ^N$. Let $\mathbf{1}_S$ and $\mathbf{1}_T$ be the characteristic vectors $S$ and $T$. It is easy to see that
+\[
+|E(S,T)|=\sum_{u\in S,v\in T}A_{uv}=\mathbf{1}_S^TA\mathbf{1}_T.
+\]
+Expressing $\mathbf{1}_S$ and $\mathbf{1}_T$ as a linear combination of the orthonormal eigenvectors basis of $\R ^N$, we have
+\begin{eqnarray*}
+|E(S,T)|&=&(\sum_i\alpha_iv_i)^TA(\sum_j\beta_jv_j)\\
+&=&\sum_i\sum_j\beta_j\alpha_iv_i^T\lambda_jv_j\\
+&=&\sum_i\alpha_i\beta_i\lambda_i\\
+&=&\alpha_1\beta_1\lambda_1+\sum_{i=2}^N\alpha_i\beta_i\lambda_i.
+\end{eqnarray*}
+We know that
+\[
+\alpha_1=\frac{|S|}{\sqrt{N}}, \beta_1=\frac{|T|}{\sqrt{N}}, \lambda_1=D.
+\]
+Therefore,
+\[
+\alpha_1\beta_1\lambda_1=\frac{D}{N}|S||T|
+\]
+Then we get,
+\begin{eqnarray*}
+|E(S,T)|-\frac{D}{N}|S||T|&=&\sum_{i=2}^N\alpha_i\beta_i\lambda_i\\
+\left||E(S,T)|-\frac{D}{N}|S||T\right|&=&\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|
+\end{eqnarray*}
+We can bound the right side as,
+\begin{eqnarray*}
+\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|&\leq&\lambda\cdot\sum_{i=2}^N|\alpha_i\beta_i|\\
+&\leq&\lambda\left(\sum_{i=2}^{N}|\alpha_i|^2\right)^{\frac{1}{2}}\left(\sum_{i=2}^{N}|\beta_i|^2\right)^{\frac{1}{2}}\\
+&\leq&\lambda\cdot\|\mathbf{1}_S\|_2\|\mathbf{1}_T\|_2\\
+&=&\lambda\sqrt{|S||T|}
+\end{eqnarray*}
+As a result,
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |=\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|
+\]
+which implies,
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |\leq\lambda\sqrt{|S||T|}.
+\]
+
+\end{proof}
+
+A result proved in \cite[Lemma 3.3]{BL2006} is close to being the converse of the above shown Expander Mixing Lemma.
 
 
 \newpage
@@ -191,6 +321,8 @@ $\replacementp$
 $\smallreplacementp$
 $\zigzag$
 $\dsp$
+
+At the end of Section 3.2 (existence of expander graphs), possibly mention that one of the main goals of graph products such as the zig-zag product is to obtain infinite families of expanders from any arbitrary graph.
 
 Define Ramanujan graphs \cite[pp. 488]{HLW2006}.
 
@@ -235,7 +367,7 @@ derandomized squaring--two graphs involved with condition on the two graphs--asy
 
 
 \section*{Acknowledgements}
-
+I sincerely thank Swastik Kopparty, Cynthia Dwork, Thomas Sauerwald and He Sun for providing useful references from their lecture notes for various results proved in Section \ref{expandergraphs} of this paper.
 
 \begin{thebibliography}{10}
 
@@ -245,11 +377,20 @@ derandomized squaring--two graphs involved with condition on the two graphs--asy
 \bibitem[ABC$^+$09]{ABCDR2009}
 {\sc Eric Allender, David A. Mix Barrington, Tanmoy Chakraborty, Samir Datta, and Sambuddha Roy}. {\em Planar and Grid Graph Reachability Problems}. Theory of Computing Systems, 45: 675-723, 2009.
 
+\bibitem[AC88]{AC1988}
+{\sc Noga Alon, and Fan Chung}. {\em Explicit construction of linear sized tolerant networks}. Discrete Mathematics, 72(1-3): 15-19, 1988.
+
 \bibitem[AKL$^+$79]{AKLLR1979}
 {\sc Romas Aleliunas, Richard M. Karp, Richard J. Lipton, Laszlo Lov\'{a}sz, and Charles Rackoff}. {Random walks, universal traversal sequences, and the complexity of maze problems}. In {\em Proceedings of the 20th Annual Symposium on Foundations of Computer Science (FOCS)}, IEEE Computer Society Press, 218-223, 1979.
 
 \bibitem[AKS87]{AKS1987}
 {\sc Miklos Ajtai, J. Komlos, and Endre Szemeredi}. {Deterministic simulation in LOGSPACE}. In {\em Proceedings of the 19th Annual ACM Symposium on Theory of Computing (STOC)}, ACM, 132-140, 1987.
+
+\bibitem[Alo86]{Alo1986}
+{\sc Noga Alon}. {\em Eigenvalues and expanders}. Combinatorica, 6(2): 83-96, 1986.
+
+\bibitem[AS16]{AS2016}
+{\sc Noga Alon and Joel H. Spencer}. {The Probabilistic Method, Fourth Edition}. {\em Wiley Series in Discrete Mathematics and Optimization, John Wiley \& Sons}, 2016.
 
 \bibitem[ASS08]{ASS2008}
 {\sc Noga Alon, Oded Schwartz, and Asaf Shapira}. {\em An elementary construction of constant-degree expanders}. Combinatorics, Probability and Computing, 17(3): 319-327, 2008.
@@ -262,6 +403,9 @@ derandomized squaring--two graphs involved with condition on the two graphs--asy
 
 \bibitem[Big93]{Big1993}
 {\sc Norman Biggs}. {Algebraic Graph Theory}, Second Edition. {\em Cambridge University Press}, 1993.
+
+\bibitem[BL06]{BL2006}
+{\sc Yonatan Bilu and Nathan Linial}. {\em Lifts, discrepancy and nearly optimal spectral gap}. Combinatorica, 26(5): 495-519, 2006.
 
 \bibitem[BM08]{BM2008}
 {\sc J. A. Bondy and U. S. R. Murty}. {Graph Theory}. {\em Graduate Texts in Mathematics, volume 244, Springer}, 2008.
@@ -278,20 +422,35 @@ derandomized squaring--two graphs involved with condition on the two graphs--asy
 \bibitem[CLR22]{CLR2022}
 {\sc Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein}. {Introduction to Algorithms}. Fourth edition, {\em MIT Press}, 2022.
 
+\bibitem[GG81]{GG1981}
+{\sc Ofer Gabber and Zvi Galil}. {\em Explicit Constructions of Linear-Sized Superconcentrators}. Journal of Computer and System Sciences,  22: 407-420, 1981.
+
 \bibitem[HLW06]{HLW2006}
 {\sc Shlomo Hoory, Nathan Linial, and Avi Wigderson}. {\em Expander Graphs and their Applications}. Bulletin of the American Mathematical Society (New Series), 43(4): 439-561, 2006
 
 \bibitem[INW94]{INW1994}
 {\sc Russell Impagliazzo, Noam Nisan, and Avi Wigderson}. {Pseudorandomness for network algorithms}. In {\em Proceedings of the 26th Annual ACM Symposium on Theory of Computing (STOC)}, ACM, 356-364, 1994.
 
+\bibitem[JM87]{JM1987}
+{\sc Shuji Jimbo and Akira Maruoka}. {\em Expanders ontained from affine transformations}. Combinatorica, 7(4): 343-355, 1987.
+
 \bibitem[KV18]{KV2018}
 {\sc Bernhard Korte and Jens Vygen}. {Combinatorial Optimization: Theory and Algorithms}. Sixth edition, {\em Springer}, 2018.
+
+\bibitem[LPS88]{LPS1988}
+{\sc A. Lubotzky, R. Phillips and P. Sarnak}. {\em Ramanujan Graphs}. Combinatorica, 8(3): 261-277, 1988.
+
+\bibitem[Nil91]{Nil1991}
+{\sc A. Nilli}. {\em On the second eigenvalue of a graph}. Discrete Mathematics, 91: 207-210, 1991.
 
 \bibitem[Nis92]{Nis1992}
 {\sc Noam Nisan}. {\em Pseudo-random generators for space-bounded computation}. Combinatorica, 12(4): 449-461, 1992.
 
 \bibitem[NSW89]{NSW1989}
 {\sc Noam Nisan, Endre Szemer\'{e}di, Avi Wigderson}. {Undirected connectivity in $o(log ^{1.5}n)$ space}. In {\em Proceedings of the 30th Foundations of Computer Science (FOCS)}, IEEE Computer Society Press, 24-29, 1989.
+
+\bibitem[Pin73]{Pin1973}
+{\sc Mark S. Pinsker}. {On the complexity of a concentrator}. In {\em $7^{th}$ Annual Teletraffic Conference}, pp. 318/1-318/4, Stockholm, 1973.
 
 \bibitem[Rei08]{Rei2008}
 {\sc Omer Reingold}. {\em Undirected Connectivity in Log-Space}. Journal of the ACM, Vol. 55, No. 4, Article 17, September 2008.
