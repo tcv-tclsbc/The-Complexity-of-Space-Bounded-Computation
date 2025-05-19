@@ -1,0 +1,461 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage{algorithm2e}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{setspace}
+\onehalfspacing
+%\usepackage{fullpage}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}{Observation}[theorem]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+
+\newtheorem{remarknum}{Theorem}
+\newtheorem{remark}[remarknum]{Remark}
+
+\newtheorem{notenum}{Theorem}
+\newtheorem{note}[notenum]{Note}
+
+\newtheorem{claimnum}{Theorem}
+\newtheorem{claimn}[claimnum]{Claim}
+
+\newcommand{\bproof}{\noindent{\bf Proof}}
+\newcommand{\eproof}{\hspace*{\fill}$\rule{2mm}{2mm}$~~~~\bigskip}
+\renewenvironment{proof}{\bproof. }{\eproof}
+\newenvironment{psketch}{\bproof~{\it Sketch}. }{\eproof}
+
+\newcommand{\cproof}{\noindent{\it Proof of Claim.}}
+
+\newcommand{\Ptime}{\mbox{\rm P}}
+\newcommand{\NP}{\mbox{\rm NP}}
+\newcommand{\coNP}{\mbox{\rm coNP}}
+
+\newcommand{\sharpP}{\mbox{$\#$\rm P}}
+
+\renewcommand{\L}{\mbox{\rm L}}
+\newcommand{\FL}{\mbox{\rm FL}}
+\newcommand{\NL}{\mbox{\rm NL}}
+\newcommand{\coNL}{\mbox{\rm co-NL}}
+\newcommand{\RL}{\mbox{\rm RL}}
+\newcommand{\SL}{\mbox{\rm SL}}
+
+\newcommand{\sharpL}{\mbox{$\#$\rm L}}
+\newcommand{\parityL}{\mbox{$\oplus$\rm L}}
+\newcommand{\parityLH}{\mbox{$\oplus$\rm LH}}
+
+\newcommand{\AC}{\mbox{\rm AC}}
+\newcommand{\ACzero}{\mbox{$\AC ^0$}}
+\newcommand{\NC}{\mbox{\rm NC}}
+\newcommand{\NCone}{\mbox{$\NC ^1$}}
+\newcommand{\NCtwo}{\mbox{$\NC ^2$}}
+\newcommand{\NCthree}{\mbox{$\NC ^3$}}
+\newcommand{\NCfour}{\mbox{$\NC ^4$}}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\boldZ}{\bf\mathbb{\bf Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\replacementp}{\mbox{$\circledR$}}
+\newcommand{\smallreplacementp}{\mbox{$\textcircled{\rm\large r}$}}
+\newcommand{\zigzag}{\mbox{$\textcircled{\rm\large z}$}}
+\newcommand{\dsp}{\mbox{$\circledS$}}
+
+\title{\bf Expander graphs: a primer}
+
+\author{{{\bf T. C. Vijayaraghavan}\footnote{Email:~\tt tcvijay@gmail.com}}~~and~{{\bf V. Arvind}\footnote{Email:~\tt arvind@imsc.res.in}}}
+
+\date{\today}
+
+%\usepackage[includeheadfoot]{geometry}
+\usepackage[margin=1in]{geometry}
+%\usepackage{blindtext}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{refcount}
+%\pagestyle{fancy}
+%\pagestyle{headings}
+\fancypagestyle{plain}[fancy]{
+\fancyhf{}
+\fancyfoot[C]{\thepage}%~of~\getpagerefnumber{LastPage}}
+\renewcommand{\headrule}{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+%\cfoot{\thepage}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this article we give a short combinatorial introduction to expander graphs, and discuss the importance of various measures connected to expanders such as the second largest eigenvalue of the adjancency matrix ($\lambda _2$), vertex expansion and spectral expansion. We also give a brief sketch of the inception of explicit construction of expanders which leads to certain expanders to be called as {\it Ramanujan graphs}.
+\end{abstract}
+
+\pagestyle{myheadings}
+\thispagestyle{plain}
+\section{Introduction}
+Expander graphs are sparse graphs that are $D$-regular, for a constant $D>0$ having linear number of edges, however have good connectivity properties in terms of {\it edge expansion} or {\it vertex expansion}. The spectrum of a graph $G$ is the set of eigenvalues of the adjacency matrix $A$ of $G$. We refer to \cite[Chapters 2 and 3]{Big1993} for an easy introduction to combinatorial properties of the spectrum of ordinary and regular graphs. From these properties it follows that the largest eigenvalue of a $D$-regular undirected graph $G$ is $D$, and $G$ is connected if and only if the multiplicity of $D$ in the spectrum of $G$ is $1$. In addition, $D=\lambda _1\geq \lambda _2\geq\cdots\geq\lambda _N\geq -D$, where $\lambda _i$ is the $i^{th}$ eigenvalue of the adjacency matrix $A$ of a $D$-regular graph $G$, for $1\leq i\leq N$. Also $G$ is non-bipartite if and only if $\lambda _N>-D$ (also see \cite[pp.15]{KS2011}).
+
+\subsection{Motivaton towards $\lambda _2$}
+In the eigenvalue spectrum of the adjacency matrix $A$ of a $D$-regular graph $G$, the second largest eigenvalue ($\lambda _2$) of $A$ is a key parameter that indicates the expansion properties of $G$. Now we motivate the importance of the second largest eigenvalue ($\lambda _2$) of the adjacency matrix $A$ of a $D$-regular graph $G$.
+
+For any $S\subseteq V(G)$, let $e(S)$ be the cardinality of the set of edges of the subgraph induced by $S$ in $G$. Let us denote the set of edges connecting a vertex in $S$ and a vertex in $\overline{S}$ by $E(S,\overline{S})$. Also let $e(S,\overline{S})=|E(S,\overline{S})|$. A $D$-regular graph $G$ is a $\delta$-edge-expander ($\delta$-expander for short) if for every set $S\subseteq V(G)$ of size at most $\frac{1}{2}|V(G)|$ there are at least $\delta D|S|$ edges connecting vertices in $S$ and vertices in $\overline{S}=V(G)-S$, that is $e(S,\overline{S})\geq\delta D|S|$.
+\begin{definition}%{\rm \cite[Definition 2.1]{HLW2006}}
+Let $G$ be a $D$-regular graph on $N$ vertices and let $S\subseteq V(G)$ such that $|S|\leq N/2$. We define the edge-expansion ratio of $G$ as
+\[
+h(G)=\min _{\{S||S|\leq \frac{n}{2}\}}\frac{e(S,\overline{S})}{|S|}
+\]
+\end{definition}
+
+\begin{theorem}{\rm {\bf (Cheeger's inequality)}\cite{Che1970}}\label{cheeger}
+~Let $G$ be a $\delta$-expander and let $A$ be the adjacency matrix of $G$ with spectrum $\lambda _1\geq \lambda _2\geq\cdots\geq \lambda _n$. Then
+\[
+\frac{D-\lambda _2}{2}\leq h(G)\leq \sqrt{2D(D-\lambda _2)}.
+\]
+\end{theorem}
+The above theorem due to J. Cheeger \cite{Che1970} signifies the importance of $(D-\lambda _2)$ known as the {\it spectral gap} of $G$. In particular, a $\delta$-edge-expander $G$ has an expansion ratio $h(G)$ bounded away from zero if and only if its spectral gap $(D-\lambda _2)$  is bounded away from zero.
+
+\begin{proof}\newline{\bf ~Proof of the left inequality:} \cite[Theorem 1.1, pp. 324]{ASS2008} Let $A$ be the adjacency matrix of $G$ and note that as $A$ is symmetric we have $\lambda_2=\max_{0\neq x\perp 1^n}\langle xA,x\rangle/\langle x,x\rangle$. For a set $S\subseteq V(G)$ let $x_S$ be the vector satisfying $x_i=1$ when $i\in S$ and $x_i=0$ otherwise, and note that $\langle x_SA,x_S\rangle=2e(S)$ and $\langle x_SA,x_S\rangle=e(S,\overline{S})$. Set $x=|\overline{S}|\cdot x_S-|S|\cdot x_{\overline{S}}$ and note that $x\perp 1^n$. Therefore,
+\begin{eqnarray}\label{cheeger-eqn}
+\lambda_2(|S|+|\overline{S}|)|S||\overline{S}|=\lambda_2\langle x,x\rangle\geq\langle xA,x\rangle=2|S|^2e(\overline{S})+2|\overline{S}|^2e(S)-2|S||\overline{S}|e(S,\overline{S}).
+\end{eqnarray}
+As $G$ is $D$-regular, we have $e(S)=\frac{1}{2}(D|S|-e(S,\overline{S}))$ and $e(\overline{S})=\frac{1}{2}(D|\overline{S}|-e(S,\overline{S}))$. Plugging this into (\ref{cheeger-eqn}), solving for $e(S,\overline{S})$ and using $|S|\leq n/2$, we complete the proof by inferring that
+\[
+e(S,\overline{S})\geq (D-\lambda_2)|S||\overline{S}|/n\geq \frac{1}{2}(D-\lambda_2)|S|.
+\]
+{\bf Proof of the right inequality:} \cite[Theorem 1.1, pp. 326]{ASS2008} Let $Q=(DI-A)$ be Laplacian of $G$. Our goal is to prove that all but one of the eigenvalues of $Q$ are at least $\frac{1}{2}\delta^2D$. Let $z=(z_1,z_2,\ldots ,z_n)$ be an eigenvector of $Q$ with the smallest nontrivial eigenvalue $\lambda$, where $V(G)=\{1,2,\ldots n\}$. Recall that for every set $U$ of at most half the vertices of $G$ there are at least $c|U|$ edges between $U$ and its complement, where $c=\delta D$ is some positive constant. Without loss of generality assume that $m\leq n/2$ of the entries of $z$ are positive (otherwise, replace $z$ by $-z$), and that $z_1\geq z_2\geq\cdots\geq z_m\geq 0\geq z_{m+1}\geq\cdots \geq z_n$. Define $x_i=z_i$ for $i\leq m$, and $x_i=0$ otherwise. Since $x_j=0$ for all $j> n/2$,
+\begin{eqnarray}\label{cheeger-eqn2}
+\sum_{ij\in E(G)}|x_i^2-x_j^2|=\sum_{ij\in E,i<j}(x_i^2-x_j^2)\geq \sum_{i:i\leq n/2}(x_i^2-x_{i+1}^2)ci=c\sum_{i=1}^nx_i^2.
+\end{eqnarray}
+Note that $(Qz)_i=\lambda z_i$ for all $i$ and hence $\lambda =\frac{\sum_{i=1}^m(Qz)_iz_i}{\sum_{i=1}^mz_i^2}$. However,
+\[
+\sum_{i=1}^m(Qz)_iz_i=\sum_{i=1}^m(dz_i^2-\sum_{j,ij\in E}z_iz_j)=\sum_{i,j\leq m, ij\in E}(z_i-z_j)^2+\sum_{i\leq m,j>m,ij\in E}z_i(z_i-z_j)\geq \sum_{ij\in E}(x_i-x_j)^2.
+\]
+As $\sum_{i=1}^mz_i^2=\sum_{i=1}^nx_i^2$ we conclude, using Cauchy-Schwartz inequality (twice) that
+\[
+\lambda\geq\frac{\sum_{ij\in E}(x_i-x_j)^2}{\sum_{i=1}^nx_i^2}=\frac{\sum_{ij\in E}(x_i-x_j)^2\sum_{ij\in E}(x_i+x_j)^2}{\sum_ix_i^2\sum_{ij\in E}(x_i+x_j)^2}\geq \frac{(\sum_{ij\in E}|x_i^2-x_j^2|)^2}{\sum_ix_i^22D\sum_ix_i^2}\geq \frac{c^2}{2D},
+\]
+where the last inequality follows from (\ref{cheeger-eqn2}). Therefore, $\lambda\geq \frac{c^2}{2D}=\frac{1}{2}\delta^2D$.
+\end{proof}
+
+\subsection{Vertex expansion}
+\begin{definition}
+Let $G=(V,E)$ be a simple undirected graph and let $N=|V|$. For any $S\subseteq V$, we denote the set of neighbors of vertices in $S$ by $\Gamma(S)$. We say that $G$ is an $(\alpha N,\Delta )$-expander or that $G$ has vertex expansion $(\alpha N,\Delta )$, if for every $S\subseteq V$ such that $|S|\leq\alpha N$ we have $|\Gamma(S)|\geq \Delta |S|$, where $0\leq \alpha <1$.
+
+If $G$ is a simple undirected bipartite graph with the partition of its vertex set into subsets $L$ and $R$ having $N$ vertices each, then we say that $G$ is an $(\alpha N,\Delta )$-bipartite expander or that $G$ has bipartite vertex expansion $(\alpha N,\Delta )$, if for every $S\subseteq L$ such that $|S|\leq\alpha N$ we have $|\Gamma(S)|\geq \Delta|S|$, where $0\leq \alpha <1$.
+\end{definition}
+
+\begin{theorem}\label{bipartiteexpanderexists}
+Let $\mathcal{G}_{N,D}$ be the set of simple undirected bipartite graphs with bipartite sets $L, R$ of size $N$ each, and which is left regular having degree $D$ for every vertex in $L$. Then for any $D$, there exists an $\alpha(D)>0$ such that for all $N$
+\[
+\Pr [G{~is~an~}(\alpha N,D-2){\textrm{-}expander}]\geq1/2,
+\]
+where $G$ is chosen independently and uniformly at random from $\mathcal{G}_{N,D}$.
+\end{theorem}
+\begin{proof}
+To choose $G$ in $\mathcal{G}_{N,D}$ uniformly at random, we choose for each vertex in $L$, $D$ neighbors in $R$ uniformly at random. For $K\leq\alpha N$, let us define
+\[
+p_K=\Pr[\exists S\subseteq L:|S|=K,|\Gamma(S)|<(D-2)|S|].
+\]
+So to prove that $\Pr [G{\rm ~is~not~an~(}\alpha N,D-2{\rm )-expander]}\geq 1/2$, it suffices to show that $\sum_Kp_K\geq\frac{1}{2}$. Now assume that there is a set $S$ of size $K$ and $|\Gamma (S)|<(D-2)|S|$. Since the total number of neighbors of vertices in $S$, counted with multiplicity, is $DK$, there are at least $2K$ repeats among all the neighbors of vertices in $S$. We calculate the quantity,
+\[
+\Pr[{\rm at~least}~2K~{\rm repeats~among~all~the~neighbors~of~vertices~in~}\mathrm{S}]\leq\left( \begin{array}{c}KD\\ 2K\end{array}\right)\left(\frac{KD}{N}\right)^{2K}.
+\]
+Here the binomial coefficient represents the number of ways of choosing $2K$ neighbors to be repeats from the (multi-)set of all neighbors of vertices in $L$, and the fraction $\frac{KD}{N}$ represents an upper bound on the probability that any given choice of a neighbor is a repeat. Since there are $\left(\begin{array}{c}N\\K\end{array}\right)$ possibilities for $S$, we have,
+\begin{eqnarray*}
+p_K&\leq&\left(\begin{array}{c}N\\K\end{array}\right)\left( \begin{array}{c}KD\\ 2K\end{array}\right)\left(\frac{KD}{N}\right)^{2K}\\
+&\leq&\begin{array}{c}\left(\frac{N\mathrm{e}}{K}\right)^K\end{array}\cdot\begin{array}{c}\left(\frac{KD\mathrm{e}}{2K}\right)^{2K}\end{array}\cdot\begin{array}{c}\left(\frac{KD}{N}\right)^{2K}\end{array}\\
+&\leq&\begin{array}{c}\left(\frac{cKD^4}{N}\right )^K\end{array},
+\end{eqnarray*}
+where $c=\mathrm{e}^3$. By setting $\alpha=1/(cD^4)$ and $K\leq \alpha N$, we know that $p_K\leq 4^{-K}$ and
+\[
+\Pr[G~{\rm is~not~an~(}\alpha N,D-2){\rm -expander}]\leq \sum_{K=1}^{\alpha N}p_K\leq\sum_{K=1}^{\alpha N}4^{-K}\leq 1/2.
+\]
+\end{proof}
+\begin{corollary}
+Let $G$ be a simple undirected graph chosen independently and uniformly at random from the set of all simple $D$-regular undirected graphs on $N$ vertices. Then, for any $D$, there exists an $\alpha (D)>0$ such that for all $N$,
+\[
+\Pr [G{~is~an~}(\alpha N,D-2){\textrm{-}expander}]\geq1/2.
+\]
+\end{corollary}
+\begin{proof}
+Given an $D$-regular undirected graph $G$ on $\{1,\ldots N\}$ vertices, let us consider the $D$-regular undirected bipartite graph $H$ on $2N$ vertices, labeled by $\{1,\ldots ,2N\}$, obtained by having a partition of the vertex set of $H$ into $L=\{1,\ldots N\}$ and $R=\{N+1,\ldots ,2N\}$ containing $N$ vertices each such that for every undirected edge $(i,j)$ in $G$ there exists an undirected edge $(i,j+N)$ in $H$. It is then easy to see that $G$ is an $(\alpha N,D-2)$-expander if and only if $H$ is also an $(\alpha N,D-2)$-expander. Our result now follows from  Theorem \ref{bipartiteexpanderexists}.
+\end{proof}
+
+\subsection{Spectral expansion and vertex expansion}
+The normalized adjacency matrix $M$ of a $D$-regular graph $G$ is the matrix obtained by dividing the adjacency matrix $A$ of $G$ by $D$. Let $G$ be a $D$-regular graph and let $M$ be the normalized adjacency matrix of $G$. The largest eigenvalue of $M$ is $\lambda_1=1$ with eigenvector $u=(1/N,\ldots ,1/N)^T$. Then the second largest eigenvalue is given by,
+\[
+\lambda_2=\max_{\| x\| =1,x\perp u}\|Mx\|.
+\]
+If $\pi$ is a probability distribution on the vertices of $G$ (represented as a vector), then we can write $\pi =u+\pi^\perp$, where $\pi^\perp\perp u$. Since $G$ is $D$-regular and assuming $\pi$ as the initial distribution,
+\[
+M\pi -u=M(u+\pi^\perp )-u=Mu-u+M\pi^\perp =M\pi^\perp.
+\]
+Thus,
+\[
+\| M\pi-u\|^2=\| M\pi^\perp \|^2\leq \lambda _2^2\|\pi^\perp\|^2=\lambda_2^2\|\pi-u\|^2.
+\]
+\begin{definition}
+A graph $G$ has spectral expansion $\lambda$ if $\lambda_2(G)\leq\lambda$.
+\end{definition}
+\begin{definition}
+Given a probability distribution $\pi$, the collision probability of $\pi$ is ${\rm Coll(\pi)}=\|\pi\|^2=\sum_x\pi_x^2$.
+\end{definition}
+\begin{lemma}
+${\rm Coll(\pi )}=\|\pi -u\|^2+1/N$.
+\end{lemma}
+\begin{proof}
+Write $\pi =u+\pi^\perp$. Then,
+\[
+\|\pi\|^2=\| u\|^2+\|\pi^\perp\}^2=1/N+\|\pi -u\|^2.
+\]
+\end{proof}
+
+Note that $M\pi$ is also a probability distribution and using the lemma, we can compute the associated collision probability:
+\[
+{\rm Coll(M\pi )}-1/N=\|M\pi -u\|^2\leq \lambda^2\|\pi -u\|^2=\lambda^2({\rm Coll(\pi)}-1/N).
+\]
+Given a probability distribution $\pi$, let the {\em support} of $x$ be ${\rm support (\pi)}=\{ x|\pi_x\neq 0\}$.
+\begin{lemma}
+Let $\pi$ be a probability distribution. Then ${\rm Coll(\pi)}\geq1/|{\rm support (\pi)}$.
+\end{lemma}
+\begin{proof}
+Let $m=|{\rm support (\pi)}|$. We claim that if $x_1+x_2+\cdots x_m=x$, then $x_1^2+x_2^2+\cdots x_m^2$ is minimized (with value $x/m$) when $x_1=x_2=\cdots x_m=x/m$. This easily follows from the fact that $x^2+y^2\geq ((x+y)/2)^2+((x+y)/2)^2$. Thus ${\rm Coll (\pi)}\geq 1/m$ and we are done.
+\end{proof}
+\begin{theorem}
+Let $G$ be a $D$-regular graph on $N$ vertices. If $G$ has spectral expansion $\lambda$, then for all $\alpha <1$, $G$ has vertex expansion $(\alpha N,\frac{1}{(1-\alpha )\lambda^2+\alpha })$.
+\end{theorem}
+\begin{proof}
+Let $|S|\leq\alpha N$. Choose $\pi$ to be the probability distribution that is uniform on $S$ and $0$ on the complement of $S$. Then,
+\[
+{\rm Coll (\pi)}=1/|S|~~~~~{\rm and}~~~~~{\rm Coll(}M\pi{\rm )}\geq 1/|{\rm support(}M\pi {\rm )}|=1/|\Gamma (S)|.
+\]
+Also,
+\[
+1/|\Gamma (S)|-1/N\leq \lambda^2(1/|S|-1/N).
+\]
+However $N\geq |S|/\alpha$, so solving the above inequality gives
+\[
+|\Gamma (S)|\geq \frac{|S|}{(1-\alpha )\lambda^2+\alpha}.
+\]
+Thus $G$ is an $(\alpha N, \frac{1}{(1-\alpha)\lambda^2+\alpha })$-expander.
+\end{proof}
+
+\begin{theorem}\label{bipartiteverteximpliesspectral}
+Let $G$ be a $D$-regular graph on $N$ vertices which is a $(N/2,1+\Delta )$-expander and let $\lambda_2(G)$ be the second largest eigenvalue of the normalized adjacency matrix $M$ of $G$. If $M$ has all non-negative eigenvalues, then $G$ has spectral expansion $\lambda$, where $\lambda =1-\Delta^2/(d(8+4\Delta^2))$.
+\end{theorem}
+\begin{proof}
+Let $x$ be an eigenvector with eigenvalue $\lambda_2(M)$. Since $x\perp u$, the vector $x$ has both positive and negative entries. Let $V_+=\{i:x_i>0\}$ and $V_-=\{i:x_i\leq 0\}$. Without loss of generality $|V_+|\geq N/2$. Let $\overline{x}$ be the vector that agrees with $x$ on $V_+$ and is $0$ elsewhere.
+
+Note that $\langle \overline{x},\overline{x}\rangle =\langle x,\overline{x}\rangle$, so it can be shown that
+\[
+\lambda_2(M)=\frac{\lambda_2\langle x,\overline{x}\rangle}{\langle x,\overline{x}\rangle}=\frac{\lambda_2\langle x,\overline{x}\rangle}{\langle\overline{x},\overline{x}\rangle}=\frac{\langle Ax,\overline{x}\rangle}{\langle\overline{x},\overline{x}\rangle}.
+\]
+Also,
+\begin{eqnarray*}
+\lambda_2(M)\langle\overline{x},\overline{x}\rangle & = & \langle Ax,\overline{x}\rangle\\
+ & = & \sum_{i,j}A_{ij}x_j\overline{x}_i\\
+ & = & \| x\|^2-\frac{1}{D}\left (D\| x\|^2-\sum_{i\in V_+,\{ i,j\}\in E}\overline{x}_ix_j\right )\\
+ & = & \| x\|^2-\frac{1}{D}\left (D\| x\|^2-\sum_{i\in V_+,\{ i,j\}\in E}\overline{x}_i\overline{x}_j-\sum_{i\in V_+,j\in V_-,\{ i,j\}\in E}\overline{x}_i\overline{x}_j\right )
+\end{eqnarray*}
+\begin{eqnarray*}
+ & = & \| x\|^2-\frac{1}{D}\left (D\| x\|^2-\sum_{\{ i,j\}\in E}\overline{x}_i\overline{x}_j\right )\\
+ & = & \| x\|^2-\frac{1}{D}\sum_{\{ i,j\}\in E} (\overline{x}_i-\overline{x}_j)^2
+\end{eqnarray*}
+\begin{eqnarray}\label{maxflowmincutlambdaequation}
+\lambda_2 & \leq & 1-\frac{\sum_{\{ i,j\in E \}}(\overline{x}_i-\overline{x}_j)^2}{D\sum_{i\in V}\overline{x}_i^2}.
+\end{eqnarray}
+Build a new (weighted directed flow) graph $H$ as follows. Let
+\[
+V(H)=\{ s\}\cup\{ v_i:i\in V_+\}\cup\{w_j:j\in V_-\}\cup\{ t\}.
+\]
+For all $i\in V_+$, put the arcs $(s,v_i)$ in $H$ with capacity $1+\Delta$. For each $i\in V_+$ and $j\in V_-$, where $j$ is a neighbor of $i$ in $G$, put the arcs $(v_i,w_j)$ in $H$ with capacity $1$. Finally, for each $j\in V_-$, put the arcs $(w_j,t)$ in $H$ with capacity $1$.
+
+We claim that the minimum cut in this graph is $(1+\Delta )|V_+|$. A cut of this size is given by the set of arcs $\{ (s,v_i):i\in V_+\}$. Given any other cut $C$, let $W=\{ i\in V_+:(s,v_i)\not\in C\}$. It is easy to see that $|W|\leq N/2$, since otherwise $C$ is not a minimum cut. For each $j\in \Gamma (W)$ in $G$, since $j$ is a neighbor of $i$ in $G$ for some $i\in W$, it follows from the definition of $H$ and the fact that $C$ is a cut, that there must be an arc in $C$ incident to $w_j$. However $|W|\leq N/2$ which implies $|\Gamma (W)|\geq (1+\Delta )|W|$. So the capacity of $C$ must be at least $(1+\Delta )|V_+-W|+|\Gamma (W)|\geq (1+\Delta )|V_+|$ from which it follows that the minimum cut has capacity $(1+\Delta )|V_+|$.
+
+By the Max-flow min-cut Theorem \cite[Section 24.2, Theorem 24.6]{CLR2022}, there exists a flow on $H$ of size $(1+\Delta )|V_+|$. In particular, note that the flow through each vertex $v_i$ must be $1+\Delta$. Reading off the flow along arcs $(v_i,w_j)$, it follows that there is a function $F:V\times V\rightarrow \R$ satisfying the following conditions (here $\tilde{E}$ denotes the set of ordered pairs $\{ i,j\}$ where $(i,j)\in E$, so that each edge in $E$ is counted twice in $\tilde{E}$):
+\begin{enumerate}
+\item $0\leq F(i,j)\leq 1$ for all $i,j\in V$.
+\item $F(i,j)=0$ if $i\not\in V_+$ or $(i,j)\not\in \tilde{E}$.
+\item $\sum_{j:(i,j)\in \tilde{E}}F(i,j)=1+\alpha$ for each $i\in V_+$.
+\item $\sum_{i:(i,j)\in \tilde{E}}F(i,j)\leq 1$ for each $j\in V$.
+\end{enumerate}
+We need to calculate two bounds involving $F$ in order to bound $\lambda _2(G)$. Keeping in mind that $2(a^2+b^2)\geq (a+b)^2$ for all real numbers $a$ and $b$, we find:
+\begin{eqnarray*}
+\sum_{(i,j\in \tilde{E}}F^2(i,j)(\overline{x}_i+\overline{x}_j)^2 & \leq & 2\sum_{(i,j)\in \tilde{E}}F^2(i,j)(\overline{x}_i^2+\overline{x}_j^2)\\
+ & = & 2\sum_{(i,j)\in \tilde{E}}\overline{x}_i^2\left (\sum_{(i,j)\in \tilde{E}}F^2(i,j)+\sum_{(i,j)\in \tilde{E}}F^2(j,i)\right )
+\end{eqnarray*}
+\begin{eqnarray*}
+ & \leq & (4+2\Delta ^2)\sum_{i\in V}\overline{x}_i^2.\\
+\sum_{(i,j)\in\tilde{E}}F(i,j)(\overline{x}_i^2-\overline{x}_j^2) & = & \sum_{i\in V}\overline{x}_i^2\left (\sum_{(i,j)\in E}F(i,j)-\sum_{(i,j)\in \tilde{E}}F(j,i)\right )\\
+ & \geq & \Delta\sum_{i\in V}\overline{x}_i^2.
+\end{eqnarray*}
+Note that in the third line, we used the fact that if $x_1+\cdots +x_n=1+\Delta$ and $0\leq x_i\leq 1$ for all $i$, then $x_1^2+\cdots +x_n^2\leq 1+\Delta ^2$. Multiplying equation (\ref{maxflowmincutlambdaequation}) by
+\[
+1=\frac{\sum_{(i,j)\in\tilde{E}}F^2(i,j)(\overline{x}_i+\overline{x}_j)^2}{\sum_{(i,j)\in\tilde{E}}F^2(i,j)(\overline{x}_i+\overline{x}_j)^2}
+\]
+and using Cauchy-Schwartz inequality, we get
+\begin{eqnarray*}
+\lambda_2(G^2) & \leq & 1-\frac{\sum_{(i,j)\in E}(\overline{x}_i-\overline{x}_j)^2}{D\sum_{i\in V}\overline{x}_i^2}\\
+ & = & 1-\frac{\sum_{(i,j)\in E}(\overline{x}_i-\overline{x}_j)^2\cdot\sum_{(i,j)\in\tilde{E}}F^2(i,j)(\overline{x}_i+\overline{x}_j)^2}{D\sum_{i\in V}\overline{x}_i^2\cdot\sum_{(i,j)\in\tilde{E}}F^2(i,j)(\overline{x}_i+\overline{x}_j)^2}\\
+ & \leq & 1-\frac{\left (\sum_{(i,j)\in\tilde{E}}F(i,j)(\overline{x}_i^2-\overline{x}_j^2\right )^2}{2D(4+2\Delta^2)\cdot\left (\sum_{i\in V}\overline{x}_i^2\right )^2}\\
+ & \leq & 1-\frac{\Delta^2}{D(8+4\Delta^2)}.
+\end{eqnarray*}
+This completes the proof.
+\end{proof}
+
+\begin{definition}\label{powering}{\rm \cite[pp. 82]{BM2008}}
+The $k^{th}$ power of a simple graph $G=(V,E)$ is the graph $G^k$ whose vertex set is $V$, two distinct vertices being adjacent in $G^k$ if and only if their distance in $G$ is atmost $k$. The graph $G^2$ is referred to as the square of $G$, the graph $G^3$ as the cube of $G$.
+\end{definition}
+Let $G$ be a undirected graph and let $A$ be its adjacency matrix. Let us consider $G$ as a directed graph $G'$ in which every edge is replaced by a pair of directed edges in the opposite directions and every self-loop in $G$ is replaced by a directed self-loop in $G'$. As a result, the number of directed closed walks of length $k$ in $G'$ is equal to the trace of $A^k$.
+
+Now let $G$ be an undirected graph, and without loss of generality assume that there exists a self-loop on every vertex of $G$. Let $A$ be the adjacency matrix of $G$, then $A^k$ is the adjacency matrix of $G^k$, for $k\in\N$. It is also easy to see that, for any square matrix $A$ and $k\in\Z^+$, the eigenvalues of $A^k$ are the $k^{th}$ powers of the eigenvalues of $A$ (see for example, \cite[Section 5.2]{Str2006}). As a result, if $G$ is a $D$-regular graph on $N$ vertices and we assume without loss of generality that there exists a self-loop on every vertex of $G$, then $G^k$ is a $D^k$-regular graph on $N$ vertices and the eigenvalues of the adjacency matrix of $G^k$ are the $k^{th}$ powers of the eigenvalues of $A$, where $k\geq 1$ and $A$ is the adjacency matrix of $G$.
+
+We now move to the general case, when the eigenvalues of $M$ need not all be non-negative.
+\begin{corollary}
+Let $G$ be a $D$-regular graph on $N$ vertices which is a $(N/2,1+\Delta )$-expander. Then $G$ has spectral expansion $\lambda$, where $\lambda =\sqrt{1-\Delta^2/(D^2(8+4\Delta^2))}$.
+\end{corollary}
+\begin{proof}
+Consider the graph $G^2$ (recall Definition \ref{powering}). If the normalized adjacency matrix of $G$ is $M$, then the normalized adjacency matrix of $G^2$ is $M^2$. Also $G^2$ is $D^2$-regular and has all non-negative eigenvalues. Finally, $G^2$ is a $(N/2,1+\Delta )$-expander, as follows: If $S$ is a subset of the vertices of size at most $N/2$, then $|\Gamma (S)|\geq (1+\Delta )|S|$. Choose a subset $S'$ of $\Gamma (S)$ with $|S|\leq |S'|\leq N/2$. Then $|\Gamma (\Gamma (S))|\geq |\Gamma (S')|\geq (1+\Delta )|S'|\geq (1+\Delta )|S|$. But $\Gamma (\Gamma (S))$ is the neighborhood of $S$ in $G^2$, and $S$ was an arbitrary subset of vertices of size at most $N/2$, so $G^2$ is a $(N/2,1+\Delta )$-expander.
+
+By Theorem \ref{bipartiteverteximpliesspectral}, $\lambda_2(G^2)<1-\Delta^2/(D^2(8+4\Delta^2))$. Since the eigenvalues of $G^2$ are the squares of the eigenvalues of $G$, taking the square-root of the right-hand side proves the corollary.
+\end{proof}
+
+\subsection{Existence of Expander graphs}
+The existence of expander graphs was first proved by M. S. Pinsker \cite{Pin1973},\cite[pp.152]{AS2016}. Standard probabilistic arguments (due to \cite{Pin1973}) show that almost every constant ($\geq 3$) degree graph is an expander (also see \cite[Theorem 2]{ASS2008}). We recall (as stated in \cite[pp. 343]{JM1987}) that the first explicit constructions of expanders are due to G. A. Margulis and also due to Gabber and Galil \cite{GG1981}. An elementary example of $3$-regular expander graphs on $p$ vertices, where $p$ is a prime, is a Cayley graph defined as follows: let $G=(\Z_p,E)$, where for any vertex $x\in\Z_p$ edges $(x,x+1),(x,x-1)$ and $(x,x^{-1})$ are in $E$. Here we assume that the multiplicative inverse of $x$ is $x^{-1}$ and that the multiplicative inverse of $0$ is itself.
+
+Several explicit constructions of expanders which are Cayley graphs are known. Constructions of families of bipartite expanders which are Cayley graphs having constant degree 5, 7, 8 shown in \cite{GG1981, JM1987} are some of the earliest examples of expanders. As stated in \cite[pp.153]{AS2016}: It is known (see \cite{Nil1991}) that the second largest eigenvalue of the adjacency matrix of any $D$-regular graph with diameter $k$ is at least $2\sqrt{D-1}(1-O(1/k))$. Therefore, in any infinite family of $D$-regular graphs, the second largest eigenvalue of the adjacency matrix is at least $2\sqrt{D-1}$ (see \cite[Chapter 3]{KS2011}, \cite[Proposition 4.2]{LPS1988}). The importance of the number $2\sqrt{D-1}$ is due to N. Alon and R. Boppana \cite[pp. 95]{Alo1986}.
+\begin{definition}{\rm \cite[Definition 1.1]{LPS1988}}
+Let $X_{N,D}$ be a $D$-regular graph on $N$ vertices. A graph $X_{N,D}$ is a {\bf Ramanujan graph} if $\lambda_2(X_{N,D})\leq 2\sqrt{D-1}$.
+\end{definition}
+\cite[pp.262]{LPS1988} have given explicit constructions of infinite families of $D$-regular Cayley graphs $G_i$, with the second largest eigenvalue $\lambda_2(G_i)\leq 2\sqrt{D-1}$ and hence these graphs are in fact Ramanujan graphs.% (also see \cite[Section 5, pp. 489]{HLW2006}).
+\begin{definition}
+Let $G$ be a $D$-regular graph on $N$ vertices and let $A$ be the adjacency matrix of $G$. We say that $G$ is a $(N,D,\lambda )$-expander if the second largest eigenvalue of $A$ {\rm (}denoted by $\lambda _2${\rm )} is atmost $\lambda$.
+\end{definition}
+
+\subsection{Significance of $\lambda_2$}
+The following theorem, known as the Expander Mixing Lemma, shows that every $(N,D,\lambda )$-expander graph is close to acting as a random $D$-regular graph on $N$ vertices.
+\begin{theorem}{\rm \cite{AC1988}}
+Let $G=(V,E)$ be a $D$-regular, $N$-vertex graph with spectral expansion $\lambda$. Then $\forall S,T\subseteq V$, we have
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |\leq \lambda \sqrt{|S||T|},
+\]
+where $E(S,T)$ is the set of edges with one vertex in $S$ and the other vertex in $T$.
+\end{theorem}
+Note that in the above statement, $|E(S,T)|$ is the number of edges with one vertex in $S$ and the other vertex in $T$. Also in a random $D$-regular graph $G$, the expected number of edges between $S$ and $T$ in $G$ is $\frac{D|S|\cdot |T|}{N}$, since the $\Pr [{\rm choosing~a~vertex~randomly~from~any}~S\subseteq V]=\frac{|S|}{N}$ and $|E|\leq ND$. As a result smaller $\lambda$ implies that the expander graph $G$ is more random.
+
+\begin{proof}
+Let $A$ be the adjacency matrix of $G$. Since $G$ is undirected, $A$ is real and symmetric. As a result its eigenvalues are real and there exists a set of orthonormal eigenvectors $\{v_1,\ldots v_N\}$ of $A$ which is a basis of $\R ^N$. Let $\mathbf{1}_S$ and $\mathbf{1}_T$ be the characteristic vectors $S$ and $T$. It is easy to see that
+\[
+|E(S,T)|=\sum_{u\in S,v\in T}A_{uv}=\mathbf{1}_S^TA\mathbf{1}_T.
+\]
+Expressing $\mathbf{1}_S$ and $\mathbf{1}_T$ as a linear combination of the orthonormal eigenvectors basis of $\R ^N$, we have
+\begin{eqnarray*}
+|E(S,T)|&=&(\sum_i\alpha_iv_i)^TA(\sum_j\beta_jv_j)\\
+&=&\sum_i\sum_j\beta_j\alpha_iv_i^T\lambda_jv_j\\
+&=&\sum_i\alpha_i\beta_i\lambda_i\\
+&=&\alpha_1\beta_1\lambda_1+\sum_{i=2}^N\alpha_i\beta_i\lambda_i.
+\end{eqnarray*}
+We know that
+\[
+\alpha_1=\frac{|S|}{\sqrt{N}}, \beta_1=\frac{|T|}{\sqrt{N}}, \lambda_1=D.
+\]
+Therefore,
+\[
+\alpha_1\beta_1\lambda_1=\frac{D}{N}|S||T|
+\]
+Then we get,
+\begin{eqnarray*}
+|E(S,T)|-\frac{D}{N}|S||T|&=&\sum_{i=2}^N\alpha_i\beta_i\lambda_i\\
+\left||E(S,T)|-\frac{D}{N}|S||T\right|&=&\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|
+\end{eqnarray*}
+We can bound the right side as,
+\begin{eqnarray*}
+\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|&\leq&\lambda\cdot\sum_{i=2}^N|\alpha_i\beta_i|\\
+&\leq&\lambda\left(\sum_{i=2}^{N}|\alpha_i|^2\right)^{\frac{1}{2}}\left(\sum_{i=2}^{N}|\beta_i|^2\right)^{\frac{1}{2}}\\
+&\leq&\lambda\cdot\|\mathbf{1}_S\|_2\|\mathbf{1}_T\|_2\\
+&=&\lambda\sqrt{|S||T|}
+\end{eqnarray*}
+As a result,
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |=\left|\sum_{i=2}^N\alpha_i\beta_i\lambda_i\right|
+\]
+which implies,
+\[
+\left ||E(S,T)|-\frac{D|S|\cdot |T|}{N}\right |\leq\lambda\sqrt{|S||T|}.
+\]
+
+\end{proof}
+
+The result proved in \cite[Lemma 3.3 \& Corollary 5.1]{BL2006} is the converse of the Expander Mixing Lemma shown above.
+
+\section*{Acknowledgements}
+We sincerely thank Swastik Kopparty, Cynthia Dwork, Thomas Sauerwald and He Sun for providing useful references from their lecture notes for various results shown in this article.
+
+\begin{thebibliography}{10}
+\bibitem[AC88]{AC1988}
+{\sc Noga Alon, and Fan Chung}. {\em Explicit construction of linear sized tolerant networks}. Discrete Mathematics, 72(1-3): 15-19, 1988.
+
+\bibitem[Alo86]{Alo1986}
+{\sc Noga Alon}. {\em Eigenvalues and expanders}. Combinatorica, 6(2): 83-96, 1986.
+
+\bibitem[AS16]{AS2016}
+{\sc Noga Alon and Joel H. Spencer}. {The Probabilistic Method, Fourth Edition}. {\em Wiley Series in Discrete Mathematics and Optimization, John Wiley \& Sons}, 2016.
+
+\bibitem[ASS08]{ASS2008}
+{\sc Noga Alon, Oded Schwartz, and Asaf Shapira}. {\em An elementary construction of constant-degree expanders}. Combinatorics, Probability and Computing, 17(3): 319-327, 2008.
+
+\bibitem[Big93]{Big1993}
+{\sc Norman Biggs}. {Algebraic Graph Theory}, Second Edition. {\em Cambridge University Press}, 1993.
+
+\bibitem[BL06]{BL2006}
+{\sc Yonatan Bilu and Nathan Linial}. {\em Lifts, discrepancy and nearly optimal spectral gap}. Combinatorica, 26(5): 495-519, 2006.
+
+\bibitem[BM08]{BM2008}
+{\sc J. A. Bondy and U. S. R. Murty}. {Graph Theory}. {\em Graduate Texts in Mathematics, volume 244, Springer}, 2008.
+
+\bibitem[Che70]{Che1970}
+{\sc J. Cheeger}. {\em A lower bound for the smallest eigenvalue of the Laplacian}. In {\em Problems in analysis (Papers dedicated to Salomon Bochner, 1969)}, pp. 195–199, Princeton University Press, Princeton, NJ, 1970.
+
+\bibitem[CLR22]{CLR2022}
+{\sc Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein}. {Introduction to Algorithms}. Fourth edition, {\em MIT Press}, 2022.
+
+\bibitem[GG81]{GG1981}
+{\sc Ofer Gabber and Zvi Galil}. {\em Explicit Constructions of Linear-Sized Superconcentrators}. Journal of Computer and System Sciences,  22: 407-420, 1981.
+
+\bibitem[JM87]{JM1987}
+{\sc Shuji Jimbo and Akira Maruoka}. {\em Expanders obtained from affine transformations}. Combinatorica, 7(4): 343-355, 1987.
+
+\bibitem[KS11]{KS2011}
+{\sc Mike Krebs and Anthony Shaheen}. {Expander families and Cayley graphs: A beginner's guide}. {\em Oxford University Press}, 2011.
+
+\bibitem[LPS88]{LPS1988}
+{\sc A. Lubotzky, R. Phillips and P. Sarnak}. {\em Ramanujan Graphs}. Combinatorica, 8(3): 261-277, 1988.
+
+\bibitem[Nil91]{Nil1991}
+{\sc A. Nilli}. {\em On the second eigenvalue of a graph}. Discrete Mathematics, 91: 207-210, 1991.
+
+\bibitem[Pin73]{Pin1973}
+{\sc Mark S. Pinsker}. {On the complexity of a concentrator}. In {\em $7^{th}$ Annual Teletraffic Conference}, pp. 318/1-318/4, Stockholm, 1973.
+
+\bibitem[Str06]{Str2006}
+{\sc Gilbert Strang}. {Linear Algebra and its Applications}, Fourth edition. {\em Cengage Learning}, 2006, Fifteenth Indian reprint, 2014.
+
+\end{thebibliography}
+\end{document}
+
+
